@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import { CPMM } from "../cpmm";
 import { Crashes } from "../crashes";
 import { General } from "../general";
-import { Compliance } from "../ipmm";
+import { Compliance } from "../compliance";
 import * as S from "./styles";
 import { Header } from "../header";
 
