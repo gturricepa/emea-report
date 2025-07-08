@@ -112,6 +112,10 @@ export const CPMM = () => {
           minWidth: "50px",
           textAlign: "center",
           padding: "2px 8px",
+          width: "7rem",
+          fontWeight: "bold",
+          paddingLeft: "2rem",
+          paddingRight: "2rem",
         }}
       >
         {value}

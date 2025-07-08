@@ -146,9 +146,11 @@ export const General = () => {
                 border: `1px solid ${color}`,
                 backgroundColor,
                 display: "inline-block",
-                minWidth: "50px",
+                width: "7rem",
                 textAlign: "center",
                 fontWeight: "bold",
+                paddingLeft: "2rem",
+                paddingRight: "2rem",
               }}
             >
               {value}
