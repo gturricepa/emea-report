@@ -216,7 +216,7 @@ export const General = () => {
       <div
         style={{ display: "flex", justifyContent: "center", padding: "5rem" }}
       >
-        <Spin size="large" tip="Carregando dados gerais..." />
+        <Spin size="small" tip="Carregando dados gerais..." />
       </div>
     );
   }

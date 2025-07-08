@@ -170,7 +170,7 @@ export const Crashes = () => {
       <div
         style={{ display: "flex", justifyContent: "center", padding: "5rem" }}
       >
-        <Spin size="large" tip="Carregando dados de crashes..." />
+        <Spin size="small" tip="Carregando dados de crashes..." />
       </div>
     );
   }

@@ -264,7 +264,7 @@ export const CPMM = () => {
       <div
         style={{ display: "flex", justifyContent: "center", padding: "5rem" }}
       >
-        <Spin size="large" tip="Carregando dados..." />
+        <Spin size="small" tip="Carregando dados..." />
       </div>
     );
   }
