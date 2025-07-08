@@ -14,6 +14,10 @@ interface ComplianceData {
   "Manager Pledge": string | null;
 }
 
+interface ActivitySummary {
+  activity: string;
+  percent: number;
+}
 const activities = [
   "Data Privacy Policy",
   "SAFE FLEET Policy Acceptance",
@@ -100,7 +104,7 @@ export const Compliance = () => {
       dataIndex: "percent",
       key: "percent",
       width: 200,
-      render: (percent: number, record: any, index: number) => (
+      render: (percent: number, record: ActivitySummary, index: number) => (
         <Progress
           percent={percent}
           status={percent === 100 ? "success" : "active"}
