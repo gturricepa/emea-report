@@ -16,6 +16,7 @@ interface GeneralData {
   Miles: string;
   "Accident Count": string;
   "% Vehicles in Accidents": string;
+  "# Accidents with Injuries": string;
   APMM: string;
   IPMM: string;
   HRD: string;
@@ -77,6 +78,11 @@ export const General = () => {
     (acc, item) => acc + Number(item.APMM || 0),
     0
   );
+
+  const totalCrashesInjuries = filteredData.reduce(
+    (acc, item) => acc + Number(item["# Accidents with Injuries"] || 0),
+    0
+  );
   const totalIPMM = filteredData.reduce(
     (acc, item) => acc + Number(item.IPMM || 0),
     0
@@ -113,7 +119,11 @@ export const General = () => {
       title: "Vehicles in Crashes %",
       value: totalPercentage,
     },
-    { key: "injuries", title: "Crashes with Injuries", value: "0" },
+    {
+      key: "injuries",
+      title: "Crashes with Injuries",
+      value: totalCrashesInjuries,
+    },
     { key: "cpmm", title: "CPMM", value: totalCPMM },
     { key: "ipmm", title: "IPMM", value: totalIPMM },
   ];
