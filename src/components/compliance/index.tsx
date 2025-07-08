@@ -104,7 +104,7 @@ export const Compliance = () => {
       dataIndex: "percent",
       key: "percent",
       width: 200,
-      render: (percent: number, record: ActivitySummary, index: number) => (
+      render: (percent: number, _record: ActivitySummary, index: number) => (
         <Progress
           percent={percent}
           status={percent === 100 ? "success" : "active"}
