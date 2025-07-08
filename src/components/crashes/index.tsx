@@ -16,7 +16,9 @@ import {
   Line,
 } from "recharts";
 import { Card } from "../card";
-import { Select } from "antd";
+import { Select, DatePicker } from "antd";
+import dayjs, { Dayjs } from "dayjs";
+import { AlertOutlined, ThunderboltOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -34,7 +36,9 @@ type Quarter = "Q1" | "Q2" | "Q3" | "Q4";
 export const Crashes = () => {
   const [data, setData] = useState<CrasehsData[]>([]);
   const [selectedEntities, setSelectedEntities] = useState<string[]>([]);
-
+  const [dateRange, setDateRange] = useState<
+    [Dayjs | null, Dayjs | null] | null
+  >(null);
   const selectedCountry = useSelector(
     (state: RootState) => state.country.selectedCountry
   );
@@ -72,22 +76,27 @@ export const Crashes = () => {
       .catch((err) => console.error("Erro lendo Excel:", err));
   }, []);
 
-  // Todas as entidades únicas
   const allEntities = Array.from(
     new Set(data.map((item) => item["Legal Entity Name"]))
   );
 
-  // Aplicar filtros
   const filteredData = data.filter((item) => {
     const matchCountry =
       selectedCountry === "all" || item.Country === selectedCountry;
+
     const matchEntity =
       selectedEntities.length === 0 ||
       selectedEntities.includes(item["Legal Entity Name"]);
-    return matchCountry && matchEntity;
+
+    const matchDate =
+      !dateRange ||
+      (item.Date &&
+        dayjs(item.Date).isAfter(dateRange[0], "day") &&
+        dayjs(item.Date).isBefore(dateRange[1], "day"));
+
+    return matchCountry && matchEntity && matchDate;
   });
 
-  // Adicionar ano
   const filteredDataWithYear: CrashesDataWithYear[] = filteredData.map(
     (item) => {
       const year = item.Date ? item.Date.slice(0, 4) : null;
@@ -101,7 +110,6 @@ export const Crashes = () => {
   const total2024 = data2024.length;
   const total2025 = data2025.length;
 
-  // Classificações
   const allClassifications = Array.from(
     new Set(data.map((item) => item.Classification))
   );
@@ -121,7 +129,6 @@ export const Crashes = () => {
     count: classificationCountsAllYears[classification] || 0,
   }));
 
-  // Trimestres
   const getQuarter = (month: number): Quarter => {
     if (month < 3) return "Q1";
     if (month < 6) return "Q2";
@@ -158,8 +165,7 @@ export const Crashes = () => {
   return (
     <S.Holder>
       <S.Left>
-        {/* Filtro por Legal Entity */}
-
+        {/* Filtros */}
         <div
           style={{
             padding: "1rem",
@@ -169,18 +175,19 @@ export const Crashes = () => {
             width: "95%",
             justifyContent: "flex-start",
             alignItems: "center",
-            justifyItems: "center",
             gap: "1rem",
+            flexWrap: "wrap",
+            marginBottom: "1rem",
           }}
         >
-          {" "}
           <Select
             mode="multiple"
-            style={{ width: "15rem" }}
-            placeholder="Select Legal Entity Name(s)"
+            style={{ width: "20rem" }}
+            placeholder="Legal Entity Name"
             onChange={setSelectedEntities}
             value={selectedEntities}
             allowClear
+            maxTagCount={1}
           >
             {allEntities.map((entity) => (
               <Option key={entity} value={entity}>
@@ -188,14 +195,37 @@ export const Crashes = () => {
               </Option>
             ))}
           </Select>
-          <span>
-            Total: <b>{filteredData.length}</b>
+
+          <DatePicker.RangePicker
+            onChange={setDateRange}
+            format="DD-MM-YYYY"
+            style={{ width: "20rem" }}
+            allowClear
+          />
+
+          <span style={{ marginLeft: "1rem" }}>
+            Total:{" "}
+            <b
+              style={{
+                // paddingLeft: "1rem",
+                paddingLeft: ".5rem",
+
+                paddingRight: "1rem",
+                paddingTop: ".2rem",
+                paddingBottom: ".2rem",
+                borderRadius: "4px",
+                // border: "1px solid black",
+              }}
+            >
+              {filteredData.length}
+            </b>
           </span>
         </div>
 
+        {/* Gráfico de Barras */}
         <ResponsiveContainer
           width={"95%"}
-          height={500}
+          height={550}
           style={{
             backgroundColor: "white",
             borderRadius: "4px",
@@ -219,9 +249,24 @@ export const Crashes = () => {
       </S.Left>
 
       <S.Right>
-        <Card title="Year 2024" value={String(total2024)} footer="Crashes" />
-        <Card title="Year 2025" value={String(total2025)} footer="Crashes" />
-        <Card title="Total Injuries" value={"0"} footer="2024 - 2025" />
+        <Card
+          title="Year 2024"
+          value={String(total2024)}
+          footer="Crashes"
+          icon={<ThunderboltOutlined />}
+        />
+        <Card
+          title="Year 2025"
+          value={String(total2025)}
+          footer="Crashes"
+          icon={<ThunderboltOutlined />}
+        />
+        <Card
+          title="Total Injuries"
+          value={"0"}
+          footer="2024 - 2025"
+          icon={<AlertOutlined />}
+        />
 
         <S.LittleChartHolder>
           <ResponsiveContainer

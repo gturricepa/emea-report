@@ -20,7 +20,7 @@ export const Holder = styled.div`
     margin: 0.5rem 0;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     span {
       margin-left: 1rem;
       /* border: 1px solid grey; */

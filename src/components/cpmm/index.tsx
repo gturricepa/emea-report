@@ -136,6 +136,11 @@ export const CPMM = () => {
 
   const columns = [
     {
+      title: "Quarter",
+      dataIndex: "Period",
+      key: "Period",
+    },
+    {
       title: "YTD",
       dataIndex: "Country",
       key: "country",
@@ -176,11 +181,6 @@ export const CPMM = () => {
       dataIndex: "IPMM",
       key: "ipmm",
       render: (value: string) => renderColoredCell(value, ipmmGoal),
-    },
-    {
-      title: "Quarter",
-      dataIndex: "Period",
-      key: "Period",
     },
   ];
 

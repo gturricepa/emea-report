@@ -7,7 +7,7 @@ import { Card } from "../card";
 import * as S from "./styles";
 import type { RootState } from "../../store";
 import { WorldMap } from "react-svg-worldmap";
-import { AimOutlined } from "@ant-design/icons";
+import { AimOutlined, StockOutlined } from "@ant-design/icons";
 
 interface GeneralData {
   Country: string;
@@ -214,21 +214,25 @@ export const General = () => {
             title="Total High Hisk Drivers"
             value={totalHRD.toString()}
             footer="YTD 2025"
+            icon={<StockOutlined />}
           />
           <Card
             title="Total BTW"
             value={totalBTW.toString()}
             footer="YTD 2025"
+            icon={<StockOutlined />}
           />
           <Card
             title="Total Commentary Drive"
             value={totalCommentaryDrive.toString()}
             footer="YTD 2025"
+            icon={<StockOutlined />}
           />
           <Card
             title="Total PIFS"
             value={totalPIFS.toString()}
             footer="YTD 2025"
+            icon={<StockOutlined />}
           />
           {/* <Card
             title="Total PIFS"
