@@ -4,7 +4,7 @@ export const Holder = styled.section`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  height: 100vh;
+  /* height: 100vh; */
 `;
 
 export const Data = styled.div`
@@ -14,6 +14,7 @@ export const Data = styled.div`
   flex-wrap: wrap;
   border-radius: 4px;
   flex-direction: column;
+  align-items: center;
   b {
     margin-top: 1rem;
     background-color: white;
@@ -47,7 +48,7 @@ export const ChartHolder = styled.div<ChartHolderProps>`
   align-items: center;
   border-radius: 4px;
   width: 15rem;
-  height: 100%;
+  /* height: 100%; */
   background-color: white;
   overflow: hidden;
 
@@ -57,14 +58,18 @@ export const ChartHolder = styled.div<ChartHolderProps>`
     transform: scale(${(p) => p.$scale})
       translate(${(p) => p.$x}px, ${(p) => p.$y}px);
     transform-origin: center center;
-    transition: transform 0.4s ease;
+    transition: transform 0.3s ease;
   }
   @media (min-width: 1600px) {
     width: 15rem;
 
     svg {
-      height: 360px;
-      width: 550px;
+      width: 500px;
+      height: 400px;
+      transform: scale(${(p) => p.$scale - 0.8})
+        translate(${(p) => p.$x - 70}px, ${(p) => p.$y - 25}px);
+      /* transform-origin: center center; */
+      transition: transform 0.3s ease;
     }
   }
 `;

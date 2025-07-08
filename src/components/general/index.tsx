@@ -81,7 +81,7 @@ export const General = () => {
 
   const tableData: TableRow[] = [
     { key: "miles", title: "Miles", value: totalMiles },
-    { key: "cars", title: "Cars", value: totalCars },
+    { key: "cars", title: "Vehicles", value: totalCars },
     { key: "crashes", title: "Crashes", value: totalCrashes },
     {
       key: "percentage",

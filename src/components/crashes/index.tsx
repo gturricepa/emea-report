@@ -194,7 +194,7 @@ export const Crashes = () => {
               tick={{ fontSize: 12 }}
             />
             <Tooltip />
-            <Bar dataKey="count" fill="#009688" />
+            <Bar dataKey="count" fill="#009688" radius={[0, 4, 4, 0]} />
           </BarChart>
         </ResponsiveContainer>
 

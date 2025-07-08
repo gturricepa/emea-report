@@ -30,24 +30,25 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
             ),
           },
           {
-            value: "United Kingdom",
+            value: "Algeria",
             label: (
               <div
                 style={{ display: "flex", alignItems: "center", gap: "8px" }}
               >
-                <Flag code="GB" style={{ width: 20, height: 15 }} />
-                United Kingdom
+                <Flag code="DZ" style={{ width: 20, height: 15 }} />
+                Algeria
               </div>
             ),
           },
+
           {
-            value: "Portugal",
+            value: "Holland",
             label: (
               <div
                 style={{ display: "flex", alignItems: "center", gap: "8px" }}
               >
-                <Flag code="PT" style={{ width: 20, height: 15 }} />
-                Portugal
+                <Flag code="NL" style={{ width: 20, height: 15 }} />
+                Holland
               </div>
             ),
           },
@@ -63,24 +64,24 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
             ),
           },
           {
-            value: "Algeria",
+            value: "Portugal",
             label: (
               <div
                 style={{ display: "flex", alignItems: "center", gap: "8px" }}
               >
-                <Flag code="DZ" style={{ width: 20, height: 15 }} />
-                Algeria
+                <Flag code="PT" style={{ width: 20, height: 15 }} />
+                Portugal
               </div>
             ),
           },
           {
-            value: "Holland",
+            value: "United Kingdom",
             label: (
               <div
                 style={{ display: "flex", alignItems: "center", gap: "8px" }}
               >
-                <Flag code="NL" style={{ width: 20, height: 15 }} />
-                Netherlands
+                <Flag code="GB" style={{ width: 20, height: 15 }} />
+                United Kingdom
               </div>
             ),
           },

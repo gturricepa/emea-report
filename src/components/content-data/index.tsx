@@ -19,9 +19,10 @@ const componentMap: Record<ContentDataProps["selectedSession"], JSX.Element> = {
 
 export const ContentData = ({ selectedSession }: ContentDataProps) => {
   return (
-    <S.Holder>
+    <>
       <Header selectedSession={selectedSession} />
-      {componentMap[selectedSession]}
-    </S.Holder>
+
+      <S.Holder>{componentMap[selectedSession]}</S.Holder>
+    </>
   );
 };

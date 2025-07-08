@@ -220,7 +220,7 @@ export const CPMM = () => {
         }}
       >
         <ResponsiveContainer
-          width="40%"
+          width="30%"
           height={300}
           style={{ backgroundColor: "white", borderRadius: "4px" }}
         >
@@ -230,12 +230,17 @@ export const CPMM = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="CPMM" fill={green} name="CPMM" />
+            <Bar
+              dataKey="CPMM"
+              fill={green}
+              name="CPMM"
+              radius={[4, 4, 0, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
 
         <ResponsiveContainer
-          width="40%"
+          width="30%"
           height={300}
           style={{ backgroundColor: "white", borderRadius: "4px" }}
         >
@@ -245,7 +250,12 @@ export const CPMM = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="CPMM" fill={green} name="IPMM" />
+            <Bar
+              dataKey="CPMM"
+              fill={green}
+              name="IPMM"
+              radius={[4, 4, 0, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
