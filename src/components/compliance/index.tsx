@@ -18,6 +18,7 @@ interface ActivitySummary {
   activity: string;
   percent: number;
 }
+
 const activities = [
   "Data Privacy Policy",
   "SAFE FLEET Policy Acceptance",
@@ -68,17 +69,18 @@ export const Compliance = () => {
     let totalDone = 0;
 
     filteredData.forEach((item) => {
-      const value = item[activity as keyof ComplianceData];
+      const rawValue = item[activity as keyof ComplianceData];
+      if (!rawValue) return; // ignora null, undefined ou vazio
 
-      if (value === null || value === undefined) return;
+      const valLower = rawValue.toString().trim().toLowerCase();
 
-      const valLower = value.toString().trim().toLowerCase();
+      if (valLower === "n/a") return; // ignora "n/a" completamente
 
-      // Conta como aplicável sempre
+      // Conta como aplicável
       totalApplicable++;
 
-      // Só conta como feito se for diferente de "no" e "n/a"
-      if (valLower !== "no" && valLower !== "n/a") {
+      // Conta como feito se não for "no"
+      if (valLower !== "no") {
         totalDone++;
       }
     });
