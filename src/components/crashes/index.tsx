@@ -159,7 +159,21 @@ export const Crashes = () => {
     <S.Holder>
       <S.Left>
         {/* Filtro por Legal Entity */}
-        <div style={{ marginBottom: "1rem" }}>
+
+        <div
+          style={{
+            padding: "1rem",
+            backgroundColor: "white",
+            borderRadius: "4px",
+            display: "flex",
+            width: "95%",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            justifyItems: "center",
+            gap: "1rem",
+          }}
+        >
+          {" "}
           <Select
             mode="multiple"
             style={{ width: "15rem" }}
@@ -174,9 +188,13 @@ export const Crashes = () => {
               </Option>
             ))}
           </Select>
+          <span>
+            Total: <b>{filteredData.length}</b>
+          </span>
         </div>
 
         <ResponsiveContainer
+          width={"95%"}
           height={500}
           style={{
             backgroundColor: "white",
@@ -190,25 +208,13 @@ export const Crashes = () => {
             <YAxis
               type="category"
               dataKey="classification"
-              width={350}
+              width={300}
               tick={{ fontSize: 12 }}
             />
             <Tooltip />
             <Bar dataKey="count" fill="#009688" radius={[0, 4, 4, 0]} />
           </BarChart>
         </ResponsiveContainer>
-
-        <span
-          style={{
-            padding: "1rem",
-            backgroundColor: "white",
-            borderRadius: "4px",
-            textAlign: "center",
-            display: "block",
-          }}
-        >
-          Total: <b>{filteredData.length}</b>
-        </span>
       </S.Left>
 
       <S.Right>
@@ -217,7 +223,11 @@ export const Crashes = () => {
         <Card title="Total Injuries" value={"0"} footer="2024 - 2025" />
 
         <S.LittleChartHolder>
-          <ResponsiveContainer width="100%" height={200}>
+          <ResponsiveContainer
+            width="95%"
+            height={200}
+            style={{ marginRight: "1rem" }}
+          >
             <LineChart data={lineChartData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="quarter" />

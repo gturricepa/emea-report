@@ -20,7 +20,7 @@ interface GeneralData {
   Miles: string;
   "Accident Count": string;
   "% Vehicles in Accidents": string;
-  APMM: string; // CPMM real
+  APMM: string;
   IPMM: string;
   Period: string;
   "# Accidents with Injuries": string;
@@ -28,7 +28,9 @@ interface GeneralData {
 
 export const CPMM = () => {
   const [data, setData] = useState<GeneralData[]>([]);
-  const [selectedQuarter, setSelectedQuarter] = useState<"Q1" | "Q2">("Q1");
+  const [selectedQuarter, setSelectedQuarter] = useState<
+    "Q1" | "Q2" | "Q3" | "Q4"
+  >("Q1");
 
   const selectedCountry = useSelector(
     (state: RootState) => state.country.selectedCountry
@@ -39,12 +41,9 @@ export const CPMM = () => {
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
-        const firstSheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[firstSheetName];
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData: GeneralData[] = XLSX.utils.sheet_to_json(worksheet);
-        if (jsonData.length > 0) {
-          setData(jsonData);
-        }
+        setData(jsonData);
       })
       .catch((err) => console.error("Erro lendo Excel:", err));
   }, []);
@@ -64,7 +63,7 @@ export const CPMM = () => {
   const cppmGoal = 5.69;
   const ipmmGoal = 0.03;
 
-  const chartData = ["Q1", "Q2"].map((quarter) => {
+  const chartData = ["Q1", "Q2", "Q3", "Q4"].map((quarter) => {
     const entry = data.find(
       (item) =>
         item.Period === quarter &&
@@ -79,7 +78,7 @@ export const CPMM = () => {
     };
   });
 
-  const chartData2 = ["Q1", "Q2"].map((quarter) => {
+  const chartData2 = ["Q1", "Q2", "Q3", "Q4"].map((quarter) => {
     const entry = data.find(
       (item) =>
         item.Period === quarter &&
@@ -90,7 +89,7 @@ export const CPMM = () => {
 
     return {
       quarter,
-      CPMM: entry ? parseFloat(String(entry.IPMM).replace(",", ".")) : 0,
+      IPMM: entry ? parseFloat(String(entry.IPMM).replace(",", ".")) : 0,
     };
   });
 
@@ -166,43 +165,31 @@ export const CPMM = () => {
     },
   ];
 
+  const quarters: ("Q1" | "Q2" | "Q3" | "Q4")[] = ["Q1", "Q2", "Q3", "Q4"];
+
   return (
     <div style={{ padding: 20 }}>
       <Space style={{ marginBottom: 16 }}>
-        <Button
-          type="default"
-          onClick={() => setSelectedQuarter("Q1")}
-          style={{
-            backgroundColor: selectedQuarter === "Q1" ? green : undefined,
-            color: selectedQuarter === "Q1" ? "white" : green,
-            borderColor: green,
-          }}
-        >
-          <span
+        {quarters.map((quarter) => (
+          <Button
+            key={quarter}
+            type="default"
+            onClick={() => setSelectedQuarter(quarter)}
             style={{
-              color: selectedQuarter === "Q1" ? "white" : "green",
+              backgroundColor: selectedQuarter === quarter ? green : undefined,
+              color: selectedQuarter === quarter ? "white" : green,
+              borderColor: green,
             }}
           >
-            Q1
-          </span>
-        </Button>
-        <Button
-          type="default"
-          onClick={() => setSelectedQuarter("Q2")}
-          style={{
-            backgroundColor: selectedQuarter === "Q2" ? green : undefined,
-            color: selectedQuarter === "Q2" ? "white" : green,
-            borderColor: green,
-          }}
-        >
-          <span
-            style={{
-              color: selectedQuarter === "Q1" ? "green" : "white",
-            }}
-          >
-            Q2
-          </span>
-        </Button>
+            <span
+              style={{
+                color: selectedQuarter === quarter ? "white" : "green",
+              }}
+            >
+              {quarter}
+            </span>
+          </Button>
+        ))}
       </Space>
 
       <Table
@@ -221,12 +208,14 @@ export const CPMM = () => {
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "space-evenly",
           alignItems: "center",
+          flexWrap: "wrap",
+          gap: "2rem",
         }}
       >
         <ResponsiveContainer
-          width="30%"
+          width="45%"
           height={300}
           style={{ backgroundColor: "white", borderRadius: "4px" }}
         >
@@ -246,7 +235,7 @@ export const CPMM = () => {
         </ResponsiveContainer>
 
         <ResponsiveContainer
-          width="30%"
+          width="45%"
           height={300}
           style={{ backgroundColor: "white", borderRadius: "4px" }}
         >
@@ -257,7 +246,7 @@ export const CPMM = () => {
             <Tooltip />
             <Legend />
             <Bar
-              dataKey="CPMM"
+              dataKey="IPMM"
               fill={green}
               name="IPMM"
               radius={[4, 4, 0, 0]}

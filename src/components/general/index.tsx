@@ -95,7 +95,7 @@ export const General = () => {
 
   const columns: ColumnsType<TableRow> = [
     {
-      title: "Metric",
+      title: "Year to Date Q2 2025",
       dataIndex: "title",
       key: "title",
       width: "50%",
@@ -181,7 +181,7 @@ export const General = () => {
           bordered
           style={{ width: "95%" }}
         />
-        <b>Q1 / Q2 - 2025</b>
+        {/* <b>Q1 / Q2 - 2025</b> */}
       </S.Data>
 
       <S.Goals>

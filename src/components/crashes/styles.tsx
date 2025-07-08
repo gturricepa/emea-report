@@ -10,6 +10,7 @@ export const Left = styled.div`
   display: flex;
   flex-direction: column;
   width: 80%;
+  align-items: center;
 `;
 
 export const Right = styled.div`
