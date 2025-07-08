@@ -11,7 +11,8 @@ export const Card: React.FC<CardProps> = ({ title, value, footer }) => {
     <S.Holder>
       <span>{title}</span>
       <span>
-        {value} <S.Detail></S.Detail>{" "}
+        {value}
+        {/* {value} <S.Detail></S.Detail>{" "} */}
       </span>
       {footer && <span>{footer}</span>}
     </S.Holder>

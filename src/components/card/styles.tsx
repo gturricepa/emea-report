@@ -7,7 +7,7 @@ export const Holder = styled.div`
   background-color: white;
   border: 1px solid #ebe5eb;
   width: 16rem;
-  height: 8rem;
+  height: 7rem;
   padding: 1rem;
   span:nth-of-type(1) {
     font-size: 1rem;

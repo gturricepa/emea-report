@@ -47,14 +47,14 @@ export const ChartHolder = styled.div<ChartHolderProps>`
   justify-content: center;
   align-items: center;
   border-radius: 4px;
-  width: 15rem;
+  width: 16rem;
   /* height: 100%; */
   background-color: white;
   overflow: hidden;
 
   svg {
     width: 500px;
-    height: 330px;
+    height: 370px;
     transform: scale(${(p) => p.$scale})
       translate(${(p) => p.$x}px, ${(p) => p.$y}px);
     transform-origin: center center;
@@ -72,4 +72,12 @@ export const ChartHolder = styled.div<ChartHolderProps>`
       transition: transform 0.3s ease;
     }
   }
+`;
+
+export const DataCardHolder = styled.div`
+  display: flex;
+  justify-content: space-between;
+  /* background-color: red; */
+  width: 95%;
+  margin-top: 4rem;
 `;

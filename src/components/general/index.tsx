@@ -16,6 +16,10 @@ interface GeneralData {
   "% Vehicles in Accidents": string;
   APMM: string;
   IPMM: string;
+  HRD: string;
+  "Commentary Drive": string;
+  PIFS: string;
+  BTW: "string";
 }
 
 interface TableRow {
@@ -76,6 +80,25 @@ export const General = () => {
     0
   );
 
+  const totalHRD = filteredData.reduce(
+    (acc, item) => acc + Number(item.HRD || 0),
+    0
+  );
+
+  const totalCommentaryDrive = filteredData.reduce(
+    (acc, item) => acc + Number(item["Commentary Drive"] || 0),
+    0
+  );
+  const totalPIFS = filteredData.reduce(
+    (acc, item) => acc + Number(item.PIFS || 0),
+    0
+  );
+
+  const totalBTW = filteredData.reduce(
+    (acc, item) => acc + Number(item.BTW || 0),
+    0
+  );
+
   const cppmGoal = 5.69;
   const ipmmGoal = 0.03;
 
@@ -112,8 +135,8 @@ export const General = () => {
           const isAboveGoal = numValue > goal;
           const color = isAboveGoal ? "#c91313" : "#169c57";
           const backgroundColor = isAboveGoal
-            ? "rgba(255, 0, 0, 0.15)"
-            : "rgba(0, 128, 0, 0.15)";
+            ? "rgba(255, 0, 0, 0.10)"
+            : "rgba(0, 128, 0, 0.10)";
 
           return (
             <span
@@ -125,6 +148,7 @@ export const General = () => {
                 display: "inline-block",
                 minWidth: "50px",
                 textAlign: "center",
+                fontWeight: "bold",
               }}
             >
               {value}
@@ -182,10 +206,41 @@ export const General = () => {
           style={{ width: "95%" }}
         />
         {/* <b>Q1 / Q2 - 2025</b> */}
+        <S.DataCardHolder>
+          <Card
+            title="Total High Hisk Drivers"
+            value={totalHRD.toString()}
+            footer="YTD 2025"
+          />
+          <Card
+            title="Total BTW"
+            value={totalBTW.toString()}
+            footer="YTD 2025"
+          />
+          <Card
+            title="Total Commentary Drive"
+            value={totalCommentaryDrive.toString()}
+            footer="YTD 2025"
+          />
+          <Card
+            title="Total PIFS"
+            value={totalPIFS.toString()}
+            footer="YTD 2025"
+          />
+          {/* <Card
+            title="Total PIFS"
+            value={totalPIFS.toString()}
+            footer="YTD 2025"
+          /> */}
+        </S.DataCardHolder>
       </S.Data>
 
       <S.Goals>
-        <Card title="CPMM GOAL" value={cppmGoal.toString()} footer="YTD 2025" />
+        <Card
+          title="TOTAL GOAL"
+          value={cppmGoal.toString()}
+          footer="YTD 2025"
+        />
         <Card title="IPMM GOAL" value={ipmmGoal.toString()} footer="YTD 2025" />
 
         <S.ChartHolder
