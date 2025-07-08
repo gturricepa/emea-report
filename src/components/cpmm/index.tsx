@@ -23,6 +23,7 @@ interface GeneralData {
   APMM: string; // CPMM real
   IPMM: string;
   Period: string;
+  "# Accidents with Injuries": string;
 }
 
 export const CPMM = () => {
@@ -137,14 +138,19 @@ export const CPMM = () => {
       key: "miles",
     },
     {
-      title: "Accident Count",
+      title: "Crashes Count",
       dataIndex: "Accident Count",
       key: "accidents",
     },
     {
-      title: "% Vehicles in Accidents",
+      title: "% Vehicles in Crashes",
       dataIndex: "% Vehicles in Accidents",
       key: "percent",
+    },
+    {
+      title: "Crashes with Injuries",
+      dataIndex: "# Accidents with Injuries",
+      key: "# Accidents with Injuries",
     },
     {
       title: "CPMM",
