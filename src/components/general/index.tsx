@@ -8,6 +8,7 @@ import * as S from "./styles";
 import type { RootState } from "../../store";
 import { WorldMap } from "react-svg-worldmap";
 import { AimOutlined, StockOutlined } from "@ant-design/icons";
+// import { Compliance } from "../compliance";
 
 interface GeneralData {
   Country: string;
@@ -37,7 +38,7 @@ export const General = () => {
   );
 
   useEffect(() => {
-    fetch("/main-total.xlsx")
+    fetch("/main-total-final.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
@@ -240,6 +241,7 @@ export const General = () => {
             footer="YTD 2025"
           /> */}
         </S.DataCardHolder>
+        {/* <Compliance /> */}
       </S.Data>
 
       <S.Goals>

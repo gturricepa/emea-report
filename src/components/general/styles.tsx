@@ -79,5 +79,5 @@ export const DataCardHolder = styled.div`
   justify-content: space-between;
   /* background-color: red; */
   width: 98%;
-  margin-top: 4rem;
+  margin-top: 1rem;
 `;

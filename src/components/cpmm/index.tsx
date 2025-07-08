@@ -37,7 +37,7 @@ export const CPMM = () => {
   );
 
   useEffect(() => {
-    fetch("/cpmm.xlsx")
+    fetch("/cpmm-final.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
@@ -241,7 +241,7 @@ export const CPMM = () => {
 
     return [
       {
-        Period: selectedQuarters.join(" + "),
+        Period: "YTD Q2 2025",
         Country: selectedCountry === "all" ? "All Countries" : selectedCountry,
         "Vehicles Count": totalVehicles.toString(),
         Miles: totalMiles.toFixed(0),
@@ -261,7 +261,8 @@ export const CPMM = () => {
     <div style={{ padding: 20 }}>
       <Space style={{ marginBottom: 16 }}>
         {quarters.map((quarter) => {
-          const isDisabled = quarter === "Q3" || quarter === "Q4";
+          const isDisabled =
+            quarter === "Q3" || quarter === "Q4" || quarter === "Q2";
           const isSelected = selectedQuarters.includes(quarter);
 
           return (
@@ -367,7 +368,7 @@ export const CPMM = () => {
               <Legend />
               <Bar
                 dataKey="IPMM"
-                fill={"#152e65dd"}
+                fill={"#154a65"}
                 name="IPMM"
                 radius={[4, 4, 0, 0]}
               />
@@ -382,7 +383,6 @@ export const CPMM = () => {
                   backgroundColor: "white",
                   borderRadius: "4px",
                   padding: ".5rem",
-                  marginTop: "1rem",
                 }}
               >
                 <BarChart data={accumulatedData}>
@@ -400,7 +400,7 @@ export const CPMM = () => {
                   <Bar
                     dataKey="IPMM"
                     name="IPMM"
-                    fill={"#152e65dd"}
+                    fill={"#154a65"}
                     radius={[4, 4, 0, 0]}
                   />
                 </BarChart>

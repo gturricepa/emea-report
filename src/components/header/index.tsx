@@ -42,13 +42,13 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
           },
 
           {
-            value: "Holland",
+            value: "Netherlands",
             label: (
               <div
                 style={{ display: "flex", alignItems: "center", gap: "8px" }}
               >
                 <Flag code="NL" style={{ width: 20, height: 15 }} />
-                Holland
+                Netherlands
               </div>
             ),
           },
