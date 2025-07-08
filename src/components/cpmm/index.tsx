@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
 import * as XLSX from "xlsx";
-import { Table, Button, Space } from "antd";
+import { Table, Button, Space, Spin } from "antd";
 import {
   BarChart,
   Bar,
@@ -28,6 +28,7 @@ interface GeneralData {
 
 export const CPMM = () => {
   const [data, setData] = useState<GeneralData[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedQuarters, setSelectedQuarters] = useState<
     ("Q1" | "Q2" | "Q3" | "Q4")[]
   >(["Q1"]);
@@ -37,6 +38,7 @@ export const CPMM = () => {
   );
 
   useEffect(() => {
+    setLoading(true);
     fetch("/cpmm-final.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
@@ -45,7 +47,8 @@ export const CPMM = () => {
         const jsonData: GeneralData[] = XLSX.utils.sheet_to_json(worksheet);
         setData(jsonData);
       })
-      .catch((err) => console.error("Erro lendo Excel:", err));
+      .catch((err) => console.error("Erro lendo Excel:", err))
+      .finally(() => setLoading(false));
   }, []);
 
   const toggleQuarter = (quarter: "Q1" | "Q2" | "Q3" | "Q4") => {
@@ -256,6 +259,15 @@ export const CPMM = () => {
       },
     ];
   })();
+  if (loading) {
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", padding: "5rem" }}
+      >
+        <Spin size="large" tip="Carregando dados..." />
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: 20 }}>

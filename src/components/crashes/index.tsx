@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
+import { Spin } from "antd";
 import * as XLSX from "xlsx";
 import * as S from "./styles";
 import {
@@ -35,6 +36,7 @@ type Quarter = "Q1" | "Q2" | "Q3" | "Q4";
 
 export const Crashes = () => {
   const [data, setData] = useState<CrasehsData[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedEntities, setSelectedEntities] = useState<string[]>([]);
   const [dateRange, setDateRange] = useState<
     [Dayjs | null, Dayjs | null] | null
@@ -44,6 +46,7 @@ export const Crashes = () => {
   );
 
   useEffect(() => {
+    setLoading(true);
     fetch("/final-crashes.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
@@ -73,9 +76,9 @@ export const Crashes = () => {
 
         setData(convertedData);
       })
-      .catch((err) => console.error("Erro lendo Excel:", err));
+      .catch((err) => console.error("Erro lendo Excel:", err))
+      .finally(() => setLoading(false));
   }, []);
-
   const allEntities = Array.from(
     new Set(data.map((item) => item["Legal Entity Name"]))
   );
@@ -161,6 +164,16 @@ export const Crashes = () => {
     2024: quarters2024[q],
     2025: quarters2025[q],
   }));
+
+  if (loading) {
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", padding: "5rem" }}
+      >
+        <Spin size="large" tip="Carregando dados de crashes..." />
+      </div>
+    );
+  }
 
   return (
     <S.Holder>

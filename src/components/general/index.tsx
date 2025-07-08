@@ -9,7 +9,7 @@ import type { RootState } from "../../store";
 import { WorldMap } from "react-svg-worldmap";
 import { AimOutlined, StockOutlined } from "@ant-design/icons";
 // import { Compliance } from "../compliance";
-
+import { Spin } from "antd";
 interface GeneralData {
   Country: string;
   "Vehicles Count": string;
@@ -33,12 +33,13 @@ interface TableRow {
 
 export const General = () => {
   const [data, setData] = useState<GeneralData[]>([]);
-
+  const [loading, setLoading] = useState(true);
   const selectedCountry = useSelector(
     (state: RootState) => state.country.selectedCountry
   );
 
   useEffect(() => {
+    setLoading(true);
     fetch("/main-total-final.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
@@ -50,7 +51,8 @@ export const General = () => {
           setData(jsonData);
         }
       })
-      .catch((err) => console.error("Erro lendo Excel:", err));
+      .catch((err) => console.error("Erro lendo Excel:", err))
+      .finally(() => setLoading(false));
   }, []);
 
   const filteredData =
@@ -208,6 +210,16 @@ export const General = () => {
     selectedCountry === "all" ? "all" : countryMap[selectedCountry] || "all";
   const zoomConfig =
     zoomConfigByCountry[mapCountryCode] || zoomConfigByCountry["all"];
+
+  if (loading) {
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", padding: "5rem" }}
+      >
+        <Spin size="large" tip="Carregando dados gerais..." />
+      </div>
+    );
+  }
 
   return (
     <S.Holder>
