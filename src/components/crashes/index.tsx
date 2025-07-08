@@ -44,7 +44,7 @@ export const Crashes = () => {
   );
 
   useEffect(() => {
-    fetch("/crashes-final.xlsx")
+    fetch("/final-crashes.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
@@ -225,7 +225,7 @@ export const Crashes = () => {
         {/* Gráfico de Barras */}
         <ResponsiveContainer
           width={"95%"}
-          height={550}
+          height={600}
           style={{
             backgroundColor: "white",
             borderRadius: "4px",

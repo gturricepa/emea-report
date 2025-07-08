@@ -130,7 +130,7 @@ export const General = () => {
 
   const columns: ColumnsType<TableRow> = [
     {
-      title: "YTD",
+      title: "YTD Q1",
       dataIndex: "title",
       key: "title",
       width: "50%",
@@ -224,25 +224,25 @@ export const General = () => {
           <Card
             title="Total High Hisk Drivers"
             value={totalHRD.toString()}
-            footer="YTD 2025"
+            footer="YTD Q1 2025"
             icon={<StockOutlined />}
           />
           <Card
             title="Total BTW"
             value={totalBTW.toString()}
-            footer="YTD 2025"
+            footer="YTD Q1 2025"
             icon={<StockOutlined />}
           />
           <Card
             title="Total Commentary Drive"
             value={totalCommentaryDrive.toString()}
-            footer="YTD 2025"
+            footer="YTD Q1 2025"
             icon={<StockOutlined />}
           />
           <Card
             title="Total PIFS"
             value={totalPIFS.toString()}
-            footer="YTD 2025"
+            footer="YTD Q1 2025"
             icon={<StockOutlined />}
           />
           {/* <Card
@@ -258,13 +258,13 @@ export const General = () => {
         <Card
           title="TOTAL GOAL"
           value={cppmGoal.toString()}
-          footer="YTD 2025"
+          footer="2025"
           icon={<AimOutlined />}
         />
         <Card
           title="IPMM GOAL"
           value={ipmmGoal.toString()}
-          footer="YTD 2025"
+          footer="2025"
           icon={<AimOutlined />}
         />
 

@@ -4,7 +4,7 @@ export const Holder = styled.header`
   display: flex;
   background-color: #fcfbfb !important;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 6px;
   border-radius: 4px;
   margin-bottom: 0.9rem;
