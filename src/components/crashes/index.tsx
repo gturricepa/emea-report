@@ -47,7 +47,7 @@ export const Crashes = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/final-crashes.xlsx")
+    fetch("/assets/final-crashes.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });

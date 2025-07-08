@@ -40,7 +40,7 @@ export const General = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/main-total-final.xlsx")
+    fetch("/assets/main-total-final.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
