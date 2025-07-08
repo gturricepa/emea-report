@@ -29,6 +29,7 @@ export const LittleChartHolder = styled.div`
   width: 90%;
   justify-content: center;
   align-items: center;
+  padding: 0.5rem;
 `;
 export const Detail = styled.div`
   display: flex;

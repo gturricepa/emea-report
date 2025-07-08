@@ -7,6 +7,7 @@ import { Card } from "../card";
 import * as S from "./styles";
 import type { RootState } from "../../store";
 import { WorldMap } from "react-svg-worldmap";
+import { AimOutlined } from "@ant-design/icons";
 
 interface GeneralData {
   Country: string;
@@ -118,7 +119,7 @@ export const General = () => {
 
   const columns: ColumnsType<TableRow> = [
     {
-      title: "Year to Date Q2 2025",
+      title: "YTD",
       dataIndex: "title",
       key: "title",
       width: "50%",
@@ -242,8 +243,14 @@ export const General = () => {
           title="TOTAL GOAL"
           value={cppmGoal.toString()}
           footer="YTD 2025"
+          icon={<AimOutlined />}
         />
-        <Card title="IPMM GOAL" value={ipmmGoal.toString()} footer="YTD 2025" />
+        <Card
+          title="IPMM GOAL"
+          value={ipmmGoal.toString()}
+          footer="YTD 2025"
+          icon={<AimOutlined />}
+        />
 
         <S.ChartHolder
           $scale={zoomConfig.scale}

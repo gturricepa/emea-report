@@ -20,7 +20,17 @@ export const Holder = styled.div`
     margin: 0.5rem 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    span {
+      margin-left: 1rem;
+      /* border: 1px solid grey; */
+      font-size: 1rem;
+      padding: 0.3rem;
+      padding-left: 0.8rem;
+      padding-right: 0.8rem;
+
+      border-radius: 0.4rem;
+    }
   }
 
   span:nth-of-type(3) {

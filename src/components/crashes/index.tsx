@@ -200,6 +200,7 @@ export const Crashes = () => {
             backgroundColor: "white",
             borderRadius: "4px",
             marginBottom: "1rem",
+            padding: ".5rem",
           }}
         >
           <BarChart data={chartData} layout="vertical" barCategoryGap={30}>

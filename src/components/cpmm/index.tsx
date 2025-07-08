@@ -28,9 +28,9 @@ interface GeneralData {
 
 export const CPMM = () => {
   const [data, setData] = useState<GeneralData[]>([]);
-  const [selectedQuarter, setSelectedQuarter] = useState<
-    "Q1" | "Q2" | "Q3" | "Q4"
-  >("Q1");
+  const [selectedQuarters, setSelectedQuarters] = useState<
+    ("Q1" | "Q2" | "Q3" | "Q4")[]
+  >(["Q1"]);
 
   const selectedCountry = useSelector(
     (state: RootState) => state.country.selectedCountry
@@ -48,22 +48,32 @@ export const CPMM = () => {
       .catch((err) => console.error("Erro lendo Excel:", err));
   }, []);
 
+  const toggleQuarter = (quarter: "Q1" | "Q2" | "Q3" | "Q4") => {
+    setSelectedQuarters((prev) =>
+      prev.includes(quarter)
+        ? prev.filter((q) => q !== quarter)
+        : [...prev, quarter]
+    );
+  };
+
   const filteredData =
     selectedCountry === "all"
       ? data.filter(
           (item) =>
-            item.Country === "All Countries" && item.Period === selectedQuarter
+            item.Country === "All Countries" &&
+            selectedQuarters.includes(item.Period as "Q1" | "Q2" | "Q3" | "Q4")
         )
       : data.filter(
           (item) =>
-            item.Country === selectedCountry && item.Period === selectedQuarter
+            item.Country === selectedCountry &&
+            selectedQuarters.includes(item.Period as "Q1" | "Q2" | "Q3" | "Q4")
         );
 
   const green = "#009688";
   const cppmGoal = 5.69;
   const ipmmGoal = 0.03;
 
-  const chartData = ["Q1", "Q2", "Q3", "Q4"].map((quarter) => {
+  const chartData = selectedQuarters.map((quarter) => {
     const entry = data.find(
       (item) =>
         item.Period === quarter &&
@@ -78,7 +88,7 @@ export const CPMM = () => {
     };
   });
 
-  const chartData2 = ["Q1", "Q2", "Q3", "Q4"].map((quarter) => {
+  const chartData2 = selectedQuarters.map((quarter) => {
     const entry = data.find(
       (item) =>
         item.Period === quarter &&
@@ -126,7 +136,7 @@ export const CPMM = () => {
 
   const columns = [
     {
-      title: "Country",
+      title: "YTD",
       dataIndex: "Country",
       key: "country",
     },
@@ -167,6 +177,11 @@ export const CPMM = () => {
       key: "ipmm",
       render: (value: string) => renderColoredCell(value, ipmmGoal),
     },
+    {
+      title: "Quarter",
+      dataIndex: "Period",
+      key: "Period",
+    },
   ];
 
   const quarters: ("Q1" | "Q2" | "Q3" | "Q4")[] = ["Q1", "Q2", "Q3", "Q4"];
@@ -174,26 +189,38 @@ export const CPMM = () => {
   return (
     <div style={{ padding: 20 }}>
       <Space style={{ marginBottom: 16 }}>
-        {quarters.map((quarter) => (
-          <Button
-            key={quarter}
-            type="default"
-            onClick={() => setSelectedQuarter(quarter)}
-            style={{
-              backgroundColor: selectedQuarter === quarter ? green : undefined,
-              color: selectedQuarter === quarter ? "white" : green,
-              borderColor: green,
-            }}
-          >
-            <span
+        {quarters.map((quarter) => {
+          const isDisabled = quarter === "Q3" || quarter === "Q4";
+          const isSelected = selectedQuarters.includes(quarter);
+
+          return (
+            <Button
+              key={quarter}
+              type="default"
+              onClick={() => toggleQuarter(quarter)}
+              disabled={isDisabled}
               style={{
-                color: selectedQuarter === quarter ? "white" : "green",
+                backgroundColor: isSelected ? green : undefined,
+                color: isSelected ? "white" : green,
+                borderColor: green,
+                opacity: isDisabled ? 0.4 : 1,
+                cursor: isDisabled ? "not-allowed" : "pointer",
               }}
             >
-              {quarter}
-            </span>
-          </Button>
-        ))}
+              <span
+                style={{
+                  backgroundColor: isSelected ? green : undefined,
+                  color: isSelected ? "white" : green,
+                  borderColor: green,
+                  opacity: isDisabled ? 0.4 : 1,
+                  cursor: isDisabled ? "not-allowed" : "pointer",
+                }}
+              >
+                {quarter}
+              </span>
+            </Button>
+          );
+        })}
       </Space>
 
       <Table
@@ -205,59 +232,68 @@ export const CPMM = () => {
         pagination={false}
       />
 
-      <h3 style={{ width: "100%", textAlign: "center", marginTop: "2rem" }}>
-        CPMM-IPMM by Quarter 2025
-      </h3>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "2rem",
-        }}
-      >
-        <ResponsiveContainer
-          width="45%"
-          height={300}
-          style={{ backgroundColor: "white", borderRadius: "4px" }}
+      {selectedQuarters.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "2rem",
+          }}
         >
-          <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="quarter" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar
-              dataKey="CPMM"
-              fill={green}
-              name="CPMM"
-              radius={[4, 4, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+          <h3 style={{ width: "100%", textAlign: "center", marginTop: "2rem" }}>
+            CPMM-IPMM by Quarter 2025
+          </h3>
+          <ResponsiveContainer
+            width="45%"
+            height={300}
+            style={{
+              backgroundColor: "white",
+              borderRadius: "4px",
+              padding: ".5rem",
+            }}
+          >
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="quarter" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar
+                dataKey="CPMM"
+                fill={green}
+                name="CPMM"
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
 
-        <ResponsiveContainer
-          width="45%"
-          height={300}
-          style={{ backgroundColor: "white", borderRadius: "4px" }}
-        >
-          <BarChart data={chartData2}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="quarter" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar
-              dataKey="IPMM"
-              fill={green}
-              name="IPMM"
-              radius={[4, 4, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+          <ResponsiveContainer
+            width="45%"
+            height={300}
+            style={{
+              backgroundColor: "white",
+              borderRadius: "4px",
+              padding: ".5rem",
+            }}
+          >
+            <BarChart data={chartData2}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="quarter" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar
+                dataKey="IPMM"
+                fill={green}
+                name="IPMM"
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
     </div>
   );
 };
