@@ -78,6 +78,6 @@ export const DataCardHolder = styled.div`
   display: flex;
   justify-content: space-between;
   /* background-color: red; */
-  width: 95%;
+  width: 98%;
   margin-top: 4rem;
 `;

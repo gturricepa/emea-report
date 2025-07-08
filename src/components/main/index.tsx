@@ -16,7 +16,7 @@ const { Sider, Content } = Layout;
 
 export const Main = () => {
   type SessionType = "general" | "cpmm - ipmm" | "compliance" | "crashes";
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [selectedSession, setSelectedSession] =
     useState<SessionType>("general");
 

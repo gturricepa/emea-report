@@ -206,7 +206,7 @@ export const General = () => {
           dataSource={tableData}
           pagination={false}
           bordered
-          style={{ width: "95%" }}
+          style={{ width: "98%" }}
         />
         {/* <b>Q1 / Q2 - 2025</b> */}
         <S.DataCardHolder>

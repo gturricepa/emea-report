@@ -73,36 +73,6 @@ export const CPMM = () => {
   const cppmGoal = 5.69;
   const ipmmGoal = 0.03;
 
-  const chartData = selectedQuarters.map((quarter) => {
-    const entry = data.find(
-      (item) =>
-        item.Period === quarter &&
-        (selectedCountry === "all"
-          ? item.Country === "All Countries"
-          : item.Country === selectedCountry)
-    );
-
-    return {
-      quarter,
-      CPMM: entry ? parseFloat(String(entry.APMM).replace(",", ".")) : 0,
-    };
-  });
-
-  const chartData2 = selectedQuarters.map((quarter) => {
-    const entry = data.find(
-      (item) =>
-        item.Period === quarter &&
-        (selectedCountry === "all"
-          ? item.Country === "All Countries"
-          : item.Country === selectedCountry)
-    );
-
-    return {
-      quarter,
-      IPMM: entry ? parseFloat(String(entry.IPMM).replace(",", ".")) : 0,
-    };
-  });
-
   const renderColoredCell = (value: string, goal: number, unit?: string) => {
     const numValue = parseFloat(String(value).replace(",", "."));
     const isAboveGoal = numValue > goal;
@@ -139,52 +109,153 @@ export const CPMM = () => {
       title: "Quarter",
       dataIndex: "Period",
       key: "Period",
+      width: 100,
     },
     {
       title: "YTD",
       dataIndex: "Country",
       key: "country",
+      width: 150,
     },
     {
       title: "Vehicles Count",
       dataIndex: "Vehicles Count",
       key: "vehicles",
+      width: 150,
     },
     {
       title: "Miles",
       dataIndex: "Miles",
       key: "miles",
+      width: 100,
     },
     {
       title: "Crashes Count",
       dataIndex: "Accident Count",
       key: "accidents",
+      width: 150,
     },
     {
       title: "% Vehicles in Crashes",
       dataIndex: "% Vehicles in Accidents",
       key: "percent",
+      width: 200,
     },
     {
       title: "Crashes with Injuries",
       dataIndex: "# Accidents with Injuries",
       key: "# Accidents with Injuries",
+      width: 200,
     },
     {
       title: "CPMM",
       dataIndex: "APMM",
       key: "cpmm",
       render: (value: string) => renderColoredCell(value, cppmGoal),
+      width: 100,
     },
     {
       title: "IPMM",
       dataIndex: "IPMM",
       key: "ipmm",
       render: (value: string) => renderColoredCell(value, ipmmGoal),
+      width: 100,
     },
   ];
-
+  const quarterOrder: ("Q1" | "Q2" | "Q3" | "Q4")[] = ["Q1", "Q2", "Q3", "Q4"];
   const quarters: ("Q1" | "Q2" | "Q3" | "Q4")[] = ["Q1", "Q2", "Q3", "Q4"];
+  type Quarter = "Q1" | "Q2" | "Q3" | "Q4";
+  const sortByQuarterOrder = <T extends { quarter: string }>(arr: T[]) =>
+    [...arr].sort(
+      (a, b) =>
+        quarterOrder.indexOf(a.quarter as Quarter) -
+        quarterOrder.indexOf(b.quarter as Quarter)
+    );
+
+  const chartData = sortByQuarterOrder(
+    selectedQuarters.map((quarter) => {
+      const entry = data.find(
+        (item) =>
+          item.Period === quarter &&
+          (selectedCountry === "all"
+            ? item.Country === "All Countries"
+            : item.Country === selectedCountry)
+      );
+
+      return {
+        quarter,
+        CPMM: entry ? parseFloat(String(entry.APMM).replace(",", ".")) : 0,
+      };
+    })
+  );
+
+  const chartData2 = sortByQuarterOrder(
+    selectedQuarters.map((quarter) => {
+      const entry = data.find(
+        (item) =>
+          item.Period === quarter &&
+          (selectedCountry === "all"
+            ? item.Country === "All Countries"
+            : item.Country === selectedCountry)
+      );
+
+      return {
+        quarter,
+        IPMM: entry ? parseFloat(String(entry.IPMM).replace(",", ".")) : 0,
+      };
+    })
+  );
+
+  const showAccumulated = selectedQuarters.length > 1;
+
+  const accumulatedData = (() => {
+    if (!showAccumulated) return null;
+
+    const relevantData = filteredData.filter((item) =>
+      selectedQuarters.includes(item.Period as Quarter)
+    );
+
+    // Variáveis para soma total de métricas
+    let totalMiles = 0;
+    let totalVehicles = 0;
+    let totalCrashes = 0;
+    let totalInjuries = 0;
+
+    for (const item of relevantData) {
+      const miles = parseFloat(String(item.Miles).replace(",", ".")) || 0;
+      const vehicles = parseInt(item["Vehicles Count"]) || 0;
+      const crashes = parseInt(item["Accident Count"]) || 0;
+      const injuries = parseInt(item["# Accidents with Injuries"]) || 0;
+
+      totalMiles += miles;
+      totalVehicles += vehicles;
+      totalCrashes += crashes;
+      totalInjuries += injuries;
+    }
+
+    // Recalcula CPMM e IPMM no acumulado, pois a métrica precisa ser feita a partir dos totais
+    const accumulatedCPMM =
+      totalMiles > 0 ? (totalCrashes * 1_000_000) / totalMiles : 0;
+    const accumulatedIPMM =
+      totalMiles > 0 ? (totalInjuries * 1_000_000) / totalMiles : 0;
+
+    return [
+      {
+        Period: selectedQuarters.join(" + "),
+        Country: selectedCountry === "all" ? "All Countries" : selectedCountry,
+        "Vehicles Count": totalVehicles.toString(),
+        Miles: totalMiles.toFixed(0),
+        "Accident Count": totalCrashes.toString(),
+        "% Vehicles in Accidents":
+          totalVehicles > 0
+            ? ((totalCrashes / totalVehicles) * 100).toFixed(2)
+            : "0",
+        "# Accidents with Injuries": totalInjuries.toString(),
+        APMM: accumulatedCPMM.toFixed(2), // Aqui está o cálculo correto do CPMM acumulado
+        IPMM: accumulatedIPMM.toFixed(2), // Aqui o cálculo correto do IPMM acumulado
+      },
+    ];
+  })();
 
   return (
     <div style={{ padding: 20 }}>
@@ -231,22 +302,32 @@ export const CPMM = () => {
         }))}
         pagination={false}
       />
+      {showAccumulated && accumulatedData && (
+        <>
+          <Table
+            columns={columns}
+            showHeader={false}
+            dataSource={accumulatedData.map((item, index) => ({
+              ...item,
+              key: `acc-${index}`,
+            }))}
+            pagination={false}
+          />
+        </>
+      )}
 
       {selectedQuarters.length > 0 && (
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "space-evenly",
             alignItems: "center",
             flexWrap: "wrap",
-            gap: "2rem",
+            marginTop: "2rem",
           }}
         >
-          <h3 style={{ width: "100%", textAlign: "center", marginTop: "2rem" }}>
-            CPMM-IPMM by Quarter 2025
-          </h3>
           <ResponsiveContainer
-            width="45%"
+            width="30%"
             height={300}
             style={{
               backgroundColor: "white",
@@ -270,7 +351,7 @@ export const CPMM = () => {
           </ResponsiveContainer>
 
           <ResponsiveContainer
-            width="45%"
+            width="30%"
             height={300}
             style={{
               backgroundColor: "white",
@@ -286,12 +367,46 @@ export const CPMM = () => {
               <Legend />
               <Bar
                 dataKey="IPMM"
-                fill={green}
+                fill={"#152e65dd"}
                 name="IPMM"
                 radius={[4, 4, 0, 0]}
               />
             </BarChart>
           </ResponsiveContainer>
+          {showAccumulated && accumulatedData && (
+            <>
+              <ResponsiveContainer
+                width="30%"
+                height={300}
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: "4px",
+                  padding: ".5rem",
+                  marginTop: "1rem",
+                }}
+              >
+                <BarChart data={accumulatedData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="Period" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar
+                    dataKey="APMM"
+                    name="CPMM"
+                    fill={green}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="IPMM"
+                    name="IPMM"
+                    fill={"#152e65dd"}
+                    radius={[4, 4, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </>
+          )}
         </div>
       )}
     </div>
