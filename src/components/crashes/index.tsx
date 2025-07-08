@@ -29,6 +29,7 @@ interface CrasehsData {
   Classification: string;
   "Legal Entity Name": string;
   Fleet: string;
+  "Consequences - Driver": string;
 }
 
 type CrashesDataWithYear = CrasehsData & { year: string | null };
@@ -165,6 +166,10 @@ export const Crashes = () => {
     2025: quarters2025[q],
   }));
 
+  const totalInjuries = filteredDataWithYear.filter(
+    (item) => item["Consequences - Driver"]?.trim().toLowerCase() === "injured"
+  ).length;
+
   if (loading) {
     return (
       <div
@@ -276,7 +281,7 @@ export const Crashes = () => {
         />
         <Card
           title="Total Injuries"
-          value={"0"}
+          value={String(totalInjuries)}
           footer="2024 - 2025"
           icon={<AlertOutlined />}
         />

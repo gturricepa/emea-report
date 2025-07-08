@@ -182,7 +182,7 @@ export const General = () => {
     Portugal: "PT",
     Ireland: "IE",
     Algeria: "DZ",
-    Holland: "NL",
+    Netherlands: "NL",
     India: "IN",
   };
 
