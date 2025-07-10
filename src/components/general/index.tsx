@@ -234,7 +234,7 @@ export const General = () => {
         {/* <b>Q1 / Q2 - 2025</b> */}
         <S.DataCardHolder>
           <Card
-            title="Total High Hisk Drivers"
+            title="Total High Risk Drivers"
             value={totalHRD.toString()}
             footer="YTD Q1 2025"
             icon={<StockOutlined />}
