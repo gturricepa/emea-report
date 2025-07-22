@@ -39,7 +39,7 @@ export const CPMM = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/assets/cpmm-final.xlsx")
+    fetch("/assets/cpmm-prod.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
@@ -246,12 +246,12 @@ export const CPMM = () => {
       {
         Period: "YTD Q2 2025",
         Country: selectedCountry === "all" ? "All Countries" : selectedCountry,
-        "Vehicles Count": totalVehicles.toString(),
+        "Vehicles Count": (totalVehicles / 2).toString(),
         Miles: totalMiles.toFixed(0),
         "Accident Count": totalCrashes.toString(),
         "% Vehicles in Accidents":
           totalVehicles > 0
-            ? ((totalCrashes / totalVehicles) * 100).toFixed(2)
+            ? ((totalCrashes / totalVehicles) * (12 / 6) * 100).toFixed(2)
             : "0",
         "# Accidents with Injuries": totalInjuries.toString(),
         APMM: accumulatedCPMM.toFixed(2), // Aqui está o cálculo correto do CPMM acumulado
@@ -273,8 +273,7 @@ export const CPMM = () => {
     <div style={{ padding: 20 }}>
       <Space style={{ marginBottom: 16 }}>
         {quarters.map((quarter) => {
-          const isDisabled =
-            quarter === "Q3" || quarter === "Q4" || quarter === "Q2";
+          const isDisabled = quarter === "Q3" || quarter === "Q4";
           const isSelected = selectedQuarters.includes(quarter);
 
           return (
@@ -318,9 +317,11 @@ export const CPMM = () => {
       {showAccumulated && accumulatedData && (
         <>
           <Table
+            style={{ fontWeight: "bold" }}
             columns={columns}
             showHeader={false}
             dataSource={accumulatedData.map((item, index) => ({
+              // Aqui fica a tericeira linha da tabela ----REMOVI ----
               ...item,
               key: `acc-${index}`,
             }))}
@@ -388,7 +389,7 @@ export const CPMM = () => {
           </ResponsiveContainer>
           {showAccumulated && accumulatedData && (
             <>
-              <ResponsiveContainer
+              {/* <ResponsiveContainer
                 width="30%"
                 height={300}
                 style={{
@@ -398,7 +399,7 @@ export const CPMM = () => {
                 }}
               >
                 <BarChart data={accumulatedData}>
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid strokeDasharray="3 3" />  //aqui fica o terceiro grafico ---------REMOVI--------------
                   <XAxis dataKey="Period" />
                   <YAxis />
                   <Tooltip />
@@ -416,7 +417,7 @@ export const CPMM = () => {
                     radius={[4, 4, 0, 0]}
                   />
                 </BarChart>
-              </ResponsiveContainer>
+              </ResponsiveContainer> */}
             </>
           )}
         </div>

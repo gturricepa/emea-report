@@ -40,7 +40,7 @@ export const General = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/assets/main-total-final.xlsx")
+    fetch("/assets/main-total-prod.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
@@ -76,17 +76,9 @@ export const General = () => {
     (acc, item) => acc + Number(item["% Vehicles in Accidents"] || 0),
     0
   );
-  const totalCPMM = filteredData.reduce(
-    (acc, item) => acc + Number(item.APMM || 0),
-    0
-  );
 
   const totalCrashesInjuries = filteredData.reduce(
     (acc, item) => acc + Number(item["# Accidents with Injuries"] || 0),
-    0
-  );
-  const totalIPMM = filteredData.reduce(
-    (acc, item) => acc + Number(item.IPMM || 0),
     0
   );
 
@@ -109,30 +101,44 @@ export const General = () => {
     0
   );
 
+  ////////////////////////////////
+  // const totalIPMM = filteredData.reduce(
+  //   (acc, item) => acc + Number(item.IPMM || 0),
+  //   0
+  // );
+
+  const totalIPMM = (totalCrashesInjuries * 1000000) / totalMiles || 0;
+  const totalCPMM = (totalCrashes * 1000000) / totalMiles;
+  //   const totalCPMM = filteredData.reduce(
+  //   (acc, item) => acc + Number(item.APMM || 0),
+  //   0
+  // );
+  /////////////////////////////////////
+
   const cppmGoal = 5.69;
   const ipmmGoal = 0.03;
 
   const tableData: TableRow[] = [
     { key: "miles", title: "Miles", value: totalMiles },
-    { key: "cars", title: "Vehicles", value: totalCars },
+    { key: "cars", title: "Vehicles", value: Math.floor(totalCars / 2) },
     { key: "crashes", title: "Crashes", value: totalCrashes },
     {
       key: "percentage",
       title: "Vehicles in Crashes %",
-      value: totalPercentage,
+      value: (totalPercentage / 2).toFixed(2),
     },
     {
       key: "injuries",
       title: "Crashes with Injuries",
       value: totalCrashesInjuries,
     },
-    { key: "cpmm", title: "CPMM", value: totalCPMM },
-    { key: "ipmm", title: "IPMM", value: totalIPMM },
+    { key: "cpmm", title: "CPMM", value: totalCPMM.toFixed(2) },
+    { key: "ipmm", title: "IPMM", value: totalIPMM.toFixed(2) },
   ];
 
   const columns: ColumnsType<TableRow> = [
     {
-      title: "YTD Q1",
+      title: "YTD",
       dataIndex: "title",
       key: "title",
       width: "50%",
@@ -184,8 +190,24 @@ export const General = () => {
     Algeria: "DZ",
     Netherlands: "NL",
     India: "IN",
+    Argentina: "AR",
+    Brazil: "BR",
+    Canada: "CA",
+    Chile: "CL",
+    Colombia: "CO",
+    "Costa Rica": "CR",
+    "Dominican Republic": "DO",
+    Ecuador: "EC",
+    Guatemala: "GT",
+    Mexico: "MX",
+    Panama: "PA",
+    Paraguay: "PY",
+    Peru: "PE",
+    "Puerto Rico": "PR",
+    "United States": "US",
+    Uruguay: "UY",
+    Venezuela: "VE",
   };
-
   const mapData =
     selectedCountry === "all"
       ? Object.values(countryMap).map((code) => ({ country: code, value: 1 }))
@@ -197,15 +219,32 @@ export const General = () => {
     string,
     { scale: number; x: number; y: number }
   > = {
-    all: { scale: 2.5, x: -25, y: -55 },
-    PT: { scale: 4.2, x: -20, y: -50 },
-    IE: { scale: 4.2, x: -20, y: -25 },
-    GB: { scale: 4, x: -25, y: -30 },
-    DZ: { scale: 3.5, x: -20, y: -60 },
-    NL: { scale: 4.5, x: -35, y: -35 },
-    IN: { scale: 3.2, x: -20, y: -10 },
-  };
+    all: { scale: 0.7, x: -5, y: -60 },
+    PT: { scale: 2, x: -15, y: -50 },
+    IE: { scale: 2, x: -10, y: -5 },
+    GB: { scale: 1.5, x: -25, y: -30 },
+    DZ: { scale: 3, x: -20, y: -60 },
+    NL: { scale: 2, x: -35, y: -35 },
+    IN: { scale: 1, x: -145, y: -25 },
 
+    AR: { scale: 2.5, x: 65, y: -150 },
+    BR: { scale: 2.5, x: 65, y: -100 },
+    CA: { scale: 1, x: 95, y: 90 },
+    CL: { scale: 2.5, x: 65, y: -150 },
+    CO: { scale: 2, x: 65, y: -130 },
+    CR: { scale: 3, x: 105, y: -95 },
+    DO: { scale: 3, x: 80, y: -95 },
+    EC: { scale: 3, x: 90, y: -95 },
+    GT: { scale: 3, x: 110, y: -85 },
+    MX: { scale: 2, x: 130, y: -70 },
+    PA: { scale: 3, x: 100, y: -70 },
+    PY: { scale: 2.5, x: 50, y: -120 },
+    PE: { scale: 2.5, x: 65, y: -120 },
+    PR: { scale: 4.5, x: 80, y: -85 },
+    US: { scale: 2, x: 145, y: 0 },
+    UY: { scale: 3.9, x: 65, y: -150 },
+    VE: { scale: 3.5, x: 75, y: -110 },
+  };
   const mapCountryCode =
     selectedCountry === "all" ? "all" : countryMap[selectedCountry] || "all";
   const zoomConfig =

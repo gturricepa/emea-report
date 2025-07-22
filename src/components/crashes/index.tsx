@@ -48,7 +48,7 @@ export const Crashes = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/assets/final-crashes.xlsx")
+    fetch("/assets/crashes-prod.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
@@ -267,12 +267,12 @@ export const Crashes = () => {
       </S.Left>
 
       <S.Right>
-        <Card
+        {/* <Card
           title="Year 2024"
           value={String(total2024)}
           footer="Crashes"
           icon={<ThunderboltOutlined />}
-        />
+        /> */}
         <Card
           title="Year 2025"
           value={String(total2025)}

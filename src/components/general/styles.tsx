@@ -64,11 +64,11 @@ export const ChartHolder = styled.div<ChartHolderProps>`
     width: 15rem;
 
     svg {
-      width: 500px;
-      height: 400px;
-      transform: scale(${(p) => p.$scale - 0.8})
-        translate(${(p) => p.$x - 70}px, ${(p) => p.$y - 25}px);
-      /* transform-origin: center center; */
+      width: 600px;
+      height: 500px;
+      transform: scale(${(p) => p.$scale - 0.1})
+        translate(${(p) => p.$x - 20}px, ${(p) => p.$y - 20}px);
+      transform-origin: center center;
       transition: transform 0.3s ease;
     }
   }
