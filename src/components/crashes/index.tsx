@@ -108,10 +108,10 @@ export const Crashes = () => {
     }
   );
 
-  const data2024 = filteredDataWithYear.filter((item) => item.year === "2024");
+  // const data2024 = filteredDataWithYear.filter((item) => item.year === "2024");
   const data2025 = filteredDataWithYear.filter((item) => item.year === "2025");
 
-  const total2024 = data2024.length;
+  // const total2024 = data2024.length;
   const total2025 = data2025.length;
 
   const allClassifications = Array.from(
