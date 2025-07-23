@@ -246,12 +246,12 @@ export const CPMM = () => {
       {
         Period: "YTD Q2 2025",
         Country: selectedCountry === "all" ? "All Countries" : selectedCountry,
-        "Vehicles Count": (totalVehicles / 2).toString(),
+        "Vehicles Count": (totalVehicles / 2).toFixed(0).toString(),
         Miles: totalMiles.toFixed(0),
         "Accident Count": totalCrashes.toString(),
         "% Vehicles in Accidents":
           totalVehicles > 0
-            ? ((totalCrashes / totalVehicles) * (12 / 6) * 100).toFixed(2)
+            ? ((totalCrashes / (totalVehicles / 2)) * (12 / 6) * 100).toFixed(2)
             : "0",
         "# Accidents with Injuries": totalInjuries.toString(),
         APMM: accumulatedCPMM.toFixed(2), // Aqui está o cálculo correto do CPMM acumulado
