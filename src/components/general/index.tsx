@@ -23,6 +23,8 @@ interface GeneralData {
   "Commentary Drive": string;
   PIFS: string;
   BTW: "string";
+  "CPMM GOAL": number;
+  "IPMM GOAL": number;
 }
 
 interface TableRow {
@@ -115,8 +117,13 @@ export const General = () => {
   // );
   /////////////////////////////////////
 
-  const cppmGoal = 5.69;
-  const ipmmGoal = 0.03;
+  // const cppmGoal = filteredData[0]["CPMM GOAL"];
+  // const cppmGoal = 1;
+
+  // const ipmmGoal = filteredData[0]["IPMM GOAL"];
+  // const ipmmGoal = 2;
+
+  console.log();
 
   const tableData: TableRow[] = [
     { key: "miles", title: "Miles", value: totalMiles },
@@ -151,7 +158,10 @@ export const General = () => {
         const numValue = parseFloat(value.toString());
 
         if (record.key === "cpmm" || record.key === "ipmm") {
-          const goal = record.key === "cpmm" ? cppmGoal : ipmmGoal;
+          const goal =
+            record.key === "cpmm"
+              ? filteredData[0]["CPMM GOAL"]
+              : filteredData[0]["IPMM GOAL"];
           const isAboveGoal = numValue > goal;
           const color = isAboveGoal ? "#c91313" : "#169c57";
           const backgroundColor = isAboveGoal
@@ -262,71 +272,75 @@ export const General = () => {
 
   return (
     <S.Holder>
-      <S.Data>
-        <Table
-          columns={columns}
-          dataSource={tableData}
-          pagination={false}
-          bordered
-          style={{ width: "98%" }}
-        />
-        {/* <b>Q1 / Q2 - 2025</b> */}
-        <S.DataCardHolder>
-          <Card
-            title="Total High Risk Drivers"
-            value={totalHRD.toString()}
-            footer="YTD Q1 2025"
-            icon={<StockOutlined />}
-          />
-          <Card
-            title="Total BTW"
-            value={totalBTW.toString()}
-            footer="YTD Q1 2025"
-            icon={<StockOutlined />}
-          />
-          <Card
-            title="Total Commentary Drive"
-            value={totalCommentaryDrive.toString()}
-            footer="YTD Q1 2025"
-            icon={<StockOutlined />}
-          />
-          <Card
-            title="Total PIFS"
-            value={totalPIFS.toString()}
-            footer="YTD Q1 2025"
-            icon={<StockOutlined />}
-          />
-          {/* <Card
+      {filteredData && (
+        <>
+          <S.Data>
+            <Table
+              columns={columns}
+              dataSource={tableData}
+              pagination={false}
+              bordered
+              style={{ width: "98%" }}
+            />
+            {/* <b>Q1 / Q2 - 2025</b> */}
+            <S.DataCardHolder>
+              <Card
+                title="Total High Risk Drivers"
+                value={totalHRD.toString()}
+                footer="YTD Q2 2025"
+                icon={<StockOutlined />}
+              />
+              <Card
+                title="Total BTW"
+                value={totalBTW.toString()}
+                footer="YTD Q2 2025"
+                icon={<StockOutlined />}
+              />
+              <Card
+                title="Total Commentary Drive"
+                value={totalCommentaryDrive.toString()}
+                footer="YTD Q2 2025"
+                icon={<StockOutlined />}
+              />
+              <Card
+                title="Total PIFS"
+                value={totalPIFS.toString()}
+                footer="YTD Q2 2025"
+                icon={<StockOutlined />}
+              />
+              {/* <Card
             title="Total PIFS"
             value={totalPIFS.toString()}
             footer="YTD 2025"
           /> */}
-        </S.DataCardHolder>
-        {/* <Compliance /> */}
-      </S.Data>
+            </S.DataCardHolder>
+            {/* <Compliance /> */}
+          </S.Data>
 
-      <S.Goals>
-        <Card
-          title="TOTAL GOAL"
-          value={cppmGoal.toString()}
-          footer="2025"
-          icon={<AimOutlined />}
-        />
-        <Card
-          title="IPMM GOAL"
-          value={ipmmGoal.toString()}
-          footer="2025"
-          icon={<AimOutlined />}
-        />
+          <S.Goals>
+            <Card
+              title="CPMM GOAL"
+              value={filteredData[0]["CPMM GOAL"].toString()}
+              footer="2025"
+              icon={<AimOutlined />}
+            />
+            <Card
+              title="IPMM GOAL"
+              value={filteredData[0]["IPMM GOAL"].toString()}
+              footer="2025"
+              icon={<AimOutlined />}
+            />
 
-        <S.ChartHolder
-          $scale={zoomConfig.scale}
-          $x={zoomConfig.x}
-          $y={zoomConfig.y}
-        >
-          <WorldMap color="#009688" size="responsive" data={mapData} />
-        </S.ChartHolder>
-      </S.Goals>
+            <S.ChartHolder
+              $scale={zoomConfig.scale}
+              $x={zoomConfig.x}
+              $y={zoomConfig.y}
+            >
+              <WorldMap color="#009688" size="responsive" data={mapData} />
+            </S.ChartHolder>
+          </S.Goals>
+        </>
+      )}
     </S.Holder>
   );
 };

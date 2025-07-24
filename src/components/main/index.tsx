@@ -4,6 +4,7 @@ import {
   SafetyOutlined,
   BarChartOutlined,
   LineChartOutlined,
+  ReadOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
 import single from "../../assets/single.png";
@@ -15,7 +16,12 @@ import { ContentData } from "../content-data";
 const { Sider, Content } = Layout;
 
 export const Main = () => {
-  type SessionType = "general" | "cpmm - ipmm" | "compliance" | "crashes";
+  type SessionType =
+    | "general"
+    | "cpmm - ipmm"
+    | "compliance"
+    | "crashes"
+    | "trainings";
   const [collapsed, setCollapsed] = useState(true);
   const [selectedSession, setSelectedSession] =
     useState<SessionType>("general");
@@ -55,6 +61,9 @@ export const Main = () => {
             </Menu.Item>
             <Menu.Item key="compliance" icon={<LineChartOutlined />}>
               Compliance
+            </Menu.Item>
+            <Menu.Item key="trainings" icon={<ReadOutlined />}>
+              Trainings
             </Menu.Item>
           </Menu>
 

@@ -160,7 +160,7 @@ export const Crashes = () => {
     }
   });
 
-  const lineChartData = (["Q1", "Q2", "Q3", "Q4"] as Quarter[]).map((q) => ({
+  const lineChartData = (["Q1", "Q2"] as Quarter[]).map((q) => ({
     quarter: q,
     2024: quarters2024[q],
     2025: quarters2025[q],
@@ -179,6 +179,20 @@ export const Crashes = () => {
       </div>
     );
   }
+
+  const filteredLineData = filteredDataWithYear.reduce((acc, curr) => {
+    if (!curr.Date) return acc;
+
+    const date = dayjs(curr.Date);
+    const key = date.format("YYYY-MM"); // Agrupa por ano-mês
+    acc[key] = (acc[key] || 0) + 1;
+
+    return acc;
+  }, {} as Record<string, number>);
+
+  const lineChartFilteredData = Object.entries(filteredLineData)
+    .map(([date, count]) => ({ date, count }))
+    .sort((a, b) => (a.date > b.date ? 1 : -1));
 
   return (
     <S.Holder>
@@ -263,6 +277,31 @@ export const Crashes = () => {
             <Tooltip />
             <Bar dataKey="count" fill="#009688" radius={[0, 4, 4, 0]} />
           </BarChart>
+        </ResponsiveContainer>
+        <h3>By Months</h3>
+        <ResponsiveContainer
+          width="95%"
+          height={300}
+          style={{
+            backgroundColor: "white",
+            borderRadius: "4px",
+            marginBottom: "1rem",
+            padding: ".5rem",
+          }}
+        >
+          <LineChart data={lineChartFilteredData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis allowDecimals={false} />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="count"
+              stroke="#009688"
+              strokeWidth={2}
+            />
+          </LineChart>
         </ResponsiveContainer>
       </S.Left>
 

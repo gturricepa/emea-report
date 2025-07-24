@@ -51,50 +51,6 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
               ),
             },
             {
-              value: "Ireland",
-              label: (
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <Flag code="IE" style={{ width: 20, height: 15 }} />
-                  Ireland
-                </div>
-              ),
-            },
-            {
-              value: "Netherlands",
-              label: (
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <Flag code="NL" style={{ width: 20, height: 15 }} />
-                  Netherlands
-                </div>
-              ),
-            },
-            {
-              value: "Portugal",
-              label: (
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <Flag code="PT" style={{ width: 20, height: 15 }} />
-                  Portugal
-                </div>
-              ),
-            },
-            {
-              value: "United Kingdom",
-              label: (
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <Flag code="GB" style={{ width: 20, height: 15 }} />
-                  United Kingdom
-                </div>
-              ),
-            },
-            {
               value: "Argentina",
               label: (
                 <div
@@ -205,6 +161,17 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
               ),
             },
             {
+              value: "Ireland",
+              label: (
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <Flag code="IE" style={{ width: 20, height: 15 }} />
+                  Ireland
+                </div>
+              ),
+            },
+            {
               value: "Mexico",
               label: (
                 <div
@@ -212,6 +179,17 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
                 >
                   <Flag code="MX" style={{ width: 20, height: 15 }} />
                   Mexico
+                </div>
+              ),
+            },
+            {
+              value: "Netherlands",
+              label: (
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <Flag code="NL" style={{ width: 20, height: 15 }} />
+                  Netherlands
                 </div>
               ),
             },
@@ -249,6 +227,17 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
               ),
             },
             {
+              value: "Portugal",
+              label: (
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <Flag code="PT" style={{ width: 20, height: 15 }} />
+                  Portugal
+                </div>
+              ),
+            },
+            {
               value: "Puerto Rico",
               label: (
                 <div
@@ -256,6 +245,17 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
                 >
                   <Flag code="PR" style={{ width: 20, height: 15 }} />
                   Puerto Rico
+                </div>
+              ),
+            },
+            {
+              value: "United Kingdom",
+              label: (
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <Flag code="GB" style={{ width: 20, height: 15 }} />
+                  United Kingdom
                 </div>
               ),
             },

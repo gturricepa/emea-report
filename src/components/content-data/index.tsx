@@ -5,9 +5,15 @@ import { General } from "../general";
 import { Compliance } from "../compliance";
 import * as S from "./styles";
 import { Header } from "../header";
+import { Trainings } from "../../training";
 
 type ContentDataProps = {
-  selectedSession: "general" | "cpmm - ipmm" | "compliance" | "crashes";
+  selectedSession:
+    | "general"
+    | "cpmm - ipmm"
+    | "compliance"
+    | "crashes"
+    | "trainings";
 };
 
 const componentMap: Record<ContentDataProps["selectedSession"], JSX.Element> = {
@@ -15,6 +21,7 @@ const componentMap: Record<ContentDataProps["selectedSession"], JSX.Element> = {
   "cpmm - ipmm": <CPMM />,
   compliance: <Compliance />,
   crashes: <Crashes />,
+  trainings: <Trainings />,
 };
 
 export const ContentData = ({ selectedSession }: ContentDataProps) => {

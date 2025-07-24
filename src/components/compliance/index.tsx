@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import * as XLSX from "xlsx";
 import { Table, Progress } from "antd";
 import { Card } from "../card";
+import { Ranking } from "./ranking";
+import type { ColumnsType, SortOrder } from "antd/es/table/interface";
 
 interface ComplianceData {
   Country: string;
@@ -23,18 +25,18 @@ interface ActivitySummary {
 
 const activities = [
   "Data Privacy Policy",
-  "SAFE FLEET Policy Acceptance",
-  "Pledge",
-  "Policy Scope",
-  "Insurance Policy Upload",
-  "Manager Pledge",
+  "Driver Assessment LATAM 2025 (Does not contain a video)",
   "Elearning 1",
   "Elearning 2",
   "Elearning 3",
   "Elearning 4",
+  "Insurance Policy Upload",
+  "Manager Pledge",
   "Personal Vehicle Questionnaire 2025",
+  "Pledge",
+  "Policy Scope",
+  "SAFE FLEET Policy Acceptance",
   "SAFE FLEET Policy Module Questions 2025",
-  "Driver Assessment LATAM 2025 (Does not contain a video)",
 ];
 
 export const Compliance = () => {
@@ -87,16 +89,13 @@ export const Compliance = () => {
 
     filteredData.forEach((item) => {
       const rawValue = item[activity as keyof ComplianceData];
-      if (!rawValue) return; // ignora null, undefined ou vazio
+      if (!rawValue) return;
 
       const valLower = rawValue.toString().trim().toLowerCase();
+      if (valLower === "n/a") return;
 
-      if (valLower === "n/a") return; // ignora "n/a" completamente
-
-      // Conta como aplicável
       totalApplicable++;
 
-      // Conta como feito se não for "no"
       if (valLower !== "no") {
         totalDone++;
       }
@@ -111,7 +110,7 @@ export const Compliance = () => {
     };
   });
 
-  const columns = [
+  const columns: ColumnsType<ActivitySummary> = [
     {
       title: "Activity",
       dataIndex: "activity",
@@ -123,7 +122,11 @@ export const Compliance = () => {
       dataIndex: "percent",
       key: "percent",
       width: 200,
-      render: (percent: number, _record: ActivitySummary, index: number) => (
+      sorter: (a: ActivitySummary, b: ActivitySummary): number =>
+        b.percent - a.percent,
+      defaultSortOrder: "ascend" as SortOrder,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      render: (percent: number, _record: any, index: number) => (
         <Progress
           percent={percent}
           status={percent === 100 ? "success" : "active"}
@@ -144,13 +147,11 @@ export const Compliance = () => {
     100
   ).toFixed(2);
 
-  console.log(loading);
-
   return (
     <div style={{ padding: 20 }}>
       {!loading && (
         <div style={{ marginBottom: "1rem" }}>
-          <Card title=" % Total Complete" value={percetage} />
+          <Card title="% Total Complete" value={percetage} />
         </div>
       )}
 
@@ -163,6 +164,8 @@ export const Compliance = () => {
         pagination={false}
         loading={loading}
       />
+
+      <Ranking data={data} />
     </div>
   );
 };
