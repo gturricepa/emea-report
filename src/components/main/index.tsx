@@ -73,7 +73,7 @@ export const Main = () => {
               alt="JNJ logo"
               style={{ height: "1.5rem", marginRight: "0.5rem" }}
             />
-            <span>EMEA</span>
+            {/* <span>EMEA</span> */}
           </S.Footer>
         </Sider>
 
