@@ -405,10 +405,10 @@ export const Trainings = () => {
       ? data.filter((item) => item.Country === "All Countries")
       : data.filter((item) => item.Country === selectedCountry);
 
+  console.log(filteredData);
   if (loading) return <p>Loading...</p>;
   if (filteredData.length === 0)
     return <p>No data found for selected country.</p>;
-
   return (
     <div
       style={{
