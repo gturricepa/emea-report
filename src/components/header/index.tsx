@@ -23,7 +23,11 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
           alignItems: "center",
         }}
       >
-        <h2>{selectedSession.toUpperCase()}</h2>
+        <h2>
+          {selectedSession !== "trainings"
+            ? selectedSession.toUpperCase()
+            : "INPACT TRAININGS CPMM"}
+        </h2>
         <Select
           defaultValue="all"
           style={{ width: 220, marginRight: "1rem" }}
@@ -35,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
-                  🌐 All Countries
+                  🌐 All Countries on Board
                 </div>
               ),
             },

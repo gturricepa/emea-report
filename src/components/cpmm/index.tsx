@@ -376,7 +376,7 @@ export const CPMM = () => {
             <BarChart data={chartData2}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="quarter" />
-              <YAxis />
+              <YAxis domain={[0, 1]} />
               <Tooltip />
               <Legend />
               <Bar

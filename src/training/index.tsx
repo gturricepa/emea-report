@@ -420,14 +420,25 @@ export const Trainings = () => {
         padding: "1rem",
       }}
     >
-      <FieldBarChart data={filteredData} field="HRD" label="HRD" />
+      <div
+        style={{
+          // backgroundColor: "red",
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <FieldBarChart data={filteredData} field="BTW" label="BTW" />
+      </div>
+
+      {/* <FieldBarChart data={filteredData} field="HRD" label="HRD" /> */}
       <FieldBarChart data={filteredData} field="PIFS" label="PIFS" />
       <FieldBarChart
         data={filteredData}
         field="Commentary Drive"
         label="Commentary Drive"
       />
-      <FieldBarChart data={filteredData} field="BTW" label="BTW" />
     </div>
   );
 };

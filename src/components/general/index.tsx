@@ -151,7 +151,8 @@ export const General = () => {
       width: "50%",
     },
     {
-      title: selectedCountry === "all" ? "All Countries" : selectedCountry,
+      title:
+        selectedCountry === "all" ? "All Countries on Board" : selectedCountry,
       dataIndex: "value",
       key: "value",
       render: (value, record) => {
@@ -284,12 +285,12 @@ export const General = () => {
             />
             {/* <b>Q1 / Q2 - 2025</b> */}
             <S.DataCardHolder>
-              <Card
+              {/* <Card
                 title="Total High Risk Drivers"
                 value={totalHRD.toString()}
                 footer="YTD Q2 2025"
                 icon={<StockOutlined />}
-              />
+              /> */}
               <Card
                 title="Total BTW"
                 value={totalBTW.toString()}
