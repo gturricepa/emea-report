@@ -84,10 +84,10 @@ export const General = () => {
     0
   );
 
-  const totalHRD = filteredData.reduce(
-    (acc, item) => acc + Number(item.HRD || 0),
-    0
-  );
+  // const totalHRD = filteredData.reduce(
+  //   (acc, item) => acc + Number(item.HRD || 0),
+  //   0
+  // );
 
   const totalCommentaryDrive = filteredData.reduce(
     (acc, item) => acc + Number(item["Commentary Drive"] || 0),

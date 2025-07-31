@@ -42,9 +42,7 @@ export const Crashes = () => {
   const [loading, setLoading] = useState(true);
   const [selectedEntities, setSelectedEntities] = useState<string[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [dateRange, setDateRange] = useState<
-    [Dayjs | null, Dayjs | null] | null
-  >(null);
+  const [dateRange] = useState<[Dayjs | null, Dayjs | null] | null>(null);
   const selectedCountry = useSelector(
     (state: RootState) => state.country.selectedCountry
   );
