@@ -151,7 +151,10 @@ export const Compliance = () => {
     <div style={{ padding: 20 }}>
       {!loading && (
         <div style={{ marginBottom: "1rem" }}>
-          <Card title="% Total Complete" value={percetage} />
+          <Card
+            title="% Total Complete"
+            value={percetage !== "NaN" ? percetage : " - "}
+          />
         </div>
       )}
 

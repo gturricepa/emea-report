@@ -85,6 +85,7 @@ export const Crashes = () => {
   const allEntities = Array.from(
     new Set(data.map((item) => item["Legal Entity Name"]))
   ).sort((a, b) => a.localeCompare(b));
+
   const filteredData = data.filter((item) => {
     const matchCountry =
       selectedCountry === "all" || item.Country === selectedCountry;
@@ -117,7 +118,7 @@ export const Crashes = () => {
 
   const allClassifications = Array.from(
     new Set(data.map((item) => item.Classification))
-  );
+  ).sort((a, b) => a.localeCompare(b));
 
   const classificationCountsByYear = (year: string) =>
     filteredDataWithYear
@@ -169,9 +170,23 @@ export const Crashes = () => {
   //   2025: quarters2025[q],
   // }));
 
-  const totalInjuries = filteredDataWithYear.filter(
-    (item) => item["Consequences - Driver"]?.trim().toLowerCase() === "injured"
-  ).length;
+  // const totalInjuries = filteredDataWithYear.filter(
+  //   (item) => item["Consequences - Driver"]?.trim().toLowerCase() === "injured"
+  // ).length;
+
+  const totalInjuries2025 = filteredDataWithYear
+    .filter(
+      (item) =>
+        item["Consequences - Driver"]?.trim().toLowerCase() === "injured"
+    )
+    .filter((item) => item.Date.startsWith("2025")).length;
+
+  const totalInjuries2024 = filteredDataWithYear
+    .filter(
+      (item) =>
+        item["Consequences - Driver"]?.trim().toLowerCase() === "injured"
+    )
+    .filter((item) => item.Date.startsWith("2024")).length;
 
   if (loading) {
     return (
@@ -338,6 +353,40 @@ export const Crashes = () => {
             />
           </BarChart>
         </ResponsiveContainer>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            alignItems: "center",
+            marginBottom: "1rem",
+            marginLeft: ".5rem",
+            fontSize: ".9rem",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <div
+                style={{
+                  width: 10,
+                  height: 10,
+                  backgroundColor: "#397cda",
+                  borderRadius: "50%",
+                }}
+              />
+              <span>2024</span>
+            </div>
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                backgroundColor: "#009688",
+                borderRadius: "50%",
+              }}
+            />
+            <span>2025</span>
+          </div>
+        </div>
+
         <h3>By Month</h3>
         <span style={{ color: "gray", fontSize: ".8rem" }}>
           Only data from 2025
@@ -385,13 +434,19 @@ export const Crashes = () => {
           footer="Crashes"
           icon={<ThunderboltOutlined />}
         />
+
         <Card
-          title="Total Injuries"
-          value={String(totalInjuries)}
-          footer="2024 - 2025"
+          title="Total Injuries 2024"
+          value={String(totalInjuries2024)}
+          // footer="2024"
           icon={<AlertOutlined />}
         />
-
+        <Card
+          title="Total Injuries 2025"
+          value={String(totalInjuries2025)}
+          // footer="2025"
+          icon={<AlertOutlined />}
+        />
         {/* <S.LittleChartHolder>
           <ResponsiveContainer
             width="95%"

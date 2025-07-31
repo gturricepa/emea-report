@@ -149,7 +149,7 @@ export const General = () => {
 
   const columns: ColumnsType<TableRow> = [
     {
-      title: "YTD",
+      title: "YTD 2025",
       dataIndex: "title",
       key: "title",
       width: "50%",
@@ -219,6 +219,8 @@ export const General = () => {
     Paraguay: "PY",
     Peru: "PE",
     "Puerto Rico": "PR",
+    "Puerto Rico NA": "PR",
+
     "United States": "US",
     Uruguay: "UY",
     Venezuela: "VE",

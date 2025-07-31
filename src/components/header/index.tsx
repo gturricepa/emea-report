@@ -208,17 +208,7 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
                 </div>
               ),
             },
-            {
-              value: "Paraguay",
-              label: (
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <Flag code="PY" style={{ width: 20, height: 15 }} />
-                  Paraguay
-                </div>
-              ),
-            },
+
             {
               value: "Peru",
               label: (
@@ -249,6 +239,17 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
                 >
                   <Flag code="PR" style={{ width: 20, height: 15 }} />
                   Puerto Rico
+                </div>
+              ),
+            },
+            {
+              value: "Puerto Rico NA",
+              label: (
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <Flag code="PR" style={{ width: 20, height: 15 }} />
+                  Puerto Rico NA
                 </div>
               ),
             },
