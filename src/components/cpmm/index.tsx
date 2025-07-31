@@ -39,7 +39,7 @@ export const CPMM = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/assets/cpmm-prod 1.xlsx")
+    fetch("/assets/cpmm-prod 2.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
