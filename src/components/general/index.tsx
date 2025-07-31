@@ -126,7 +126,11 @@ export const General = () => {
   console.log();
 
   const tableData: TableRow[] = [
-    { key: "miles", title: "Miles", value: totalMiles },
+    {
+      key: "miles",
+      title: "Miles",
+      value: totalMiles.toLocaleString("pt-BR", { maximumFractionDigits: 0 }),
+    },
     { key: "cars", title: "Vehicles", value: Math.floor(totalCars / 2) },
     { key: "crashes", title: "Crashes", value: totalCrashes },
     {

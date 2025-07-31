@@ -66,7 +66,7 @@ export const Compliance = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/assets/compliance1-prod.xlsx")
+    fetch("/assets/compliance1-prod (1).xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });

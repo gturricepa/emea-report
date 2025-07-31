@@ -49,7 +49,7 @@ export const Crashes = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/assets/crashes-prod.xlsx")
+    fetch("/assets/prod-fast-crash.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
@@ -83,8 +83,7 @@ export const Crashes = () => {
   }, []);
   const allEntities = Array.from(
     new Set(data.map((item) => item["Legal Entity Name"]))
-  );
-
+  ).sort((a, b) => a.localeCompare(b));
   const filteredData = data.filter((item) => {
     const matchCountry =
       selectedCountry === "all" || item.Country === selectedCountry;
@@ -109,29 +108,32 @@ export const Crashes = () => {
     }
   );
 
-  // const data2024 = filteredDataWithYear.filter((item) => item.year === "2024");
+  const data2024 = filteredDataWithYear.filter((item) => item.year === "2024");
   const data2025 = filteredDataWithYear.filter((item) => item.year === "2025");
 
-  // const total2024 = data2024.length;
+  const total2024 = data2024.length;
   const total2025 = data2025.length;
 
   const allClassifications = Array.from(
     new Set(data.map((item) => item.Classification))
   );
 
-  const countClassifications = (dataset: CrashesDataWithYear[]) =>
-    dataset.reduce((acc, curr) => {
-      const key = curr.Classification;
-      acc[key] = (acc[key] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+  const classificationCountsByYear = (year: string) =>
+    filteredDataWithYear
+      .filter((item) => item.year === year)
+      .reduce((acc, curr) => {
+        const key = curr.Classification;
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
 
-  const classificationCountsAllYears =
-    countClassifications(filteredDataWithYear);
+  const counts2024 = classificationCountsByYear("2024");
+  const counts2025 = classificationCountsByYear("2025");
 
   const chartData = allClassifications.map((classification) => ({
     classification,
-    count: classificationCountsAllYears[classification] || 0,
+    y2024: counts2024[classification] || 0,
+    y2025: counts2025[classification] || 0,
   }));
 
   const getQuarter = (month: number): Quarter => {
@@ -161,11 +163,11 @@ export const Crashes = () => {
     }
   });
 
-  const lineChartData = (["Q1", "Q2"] as Quarter[]).map((q) => ({
-    quarter: q,
-    2024: quarters2024[q],
-    2025: quarters2025[q],
-  }));
+  // const lineChartData = (["Q1", "Q2"] as Quarter[]).map((q) => ({
+  //   quarter: q,
+  //   2024: quarters2024[q],
+  //   2025: quarters2025[q],
+  // }));
 
   const totalInjuries = filteredDataWithYear.filter(
     (item) => item["Consequences - Driver"]?.trim().toLowerCase() === "injured"
@@ -194,6 +196,8 @@ export const Crashes = () => {
   const lineChartFilteredData = Object.entries(filteredLineData)
     .map(([date, count]) => ({ date, count }))
     .sort((a, b) => (a.date > b.date ? 1 : -1));
+
+  console.log(totalInjuries);
 
   return (
     <S.Holder>
@@ -258,7 +262,7 @@ export const Crashes = () => {
         {/* Gráfico de Barras */}
         <ResponsiveContainer
           width={"95%"}
-          height={600}
+          height={1000}
           style={{
             backgroundColor: "white",
             borderRadius: "4px",
@@ -266,20 +270,36 @@ export const Crashes = () => {
             padding: ".5rem",
           }}
         >
-          <BarChart data={chartData} layout="vertical" barCategoryGap={30}>
+          <BarChart data={chartData} layout="vertical" barCategoryGap={10}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis type="number" />
             <YAxis
               type="category"
               dataKey="classification"
-              width={300}
+              width={350}
               tick={{ fontSize: 12 }}
             />
             <Tooltip />
-            <Bar dataKey="count" fill="#009688" radius={[0, 4, 4, 0]} />
+            <Bar
+              dataKey="y2024"
+              fill="#397cda" // Azul
+              stackId="a"
+              radius={[0, 4, 4, 0]}
+              barSize={20}
+            />
+            <Bar
+              dataKey="y2025"
+              fill="#009688" // Verde
+              stackId="a"
+              radius={[0, 4, 4, 0]}
+              barSize={20}
+            />
           </BarChart>
         </ResponsiveContainer>
-        <h3>By Months</h3>
+        <h3>By Month</h3>
+        <span style={{ color: "gray", fontSize: ".8rem" }}>
+          Only data from 2025
+        </span>
         <ResponsiveContainer
           width="95%"
           height={300}
@@ -290,7 +310,11 @@ export const Crashes = () => {
             padding: ".5rem",
           }}
         >
-          <LineChart data={lineChartFilteredData}>
+          <LineChart
+            data={lineChartFilteredData.filter((item) =>
+              item.date.startsWith("2025")
+            )}
+          >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis allowDecimals={false} />
@@ -307,12 +331,12 @@ export const Crashes = () => {
       </S.Left>
 
       <S.Right>
-        {/* <Card
+        <Card
           title="Year 2024"
           value={String(total2024)}
           footer="Crashes"
           icon={<ThunderboltOutlined />}
-        /> */}
+        />
         <Card
           title="Year 2025"
           value={String(total2025)}
@@ -326,7 +350,7 @@ export const Crashes = () => {
           icon={<AlertOutlined />}
         />
 
-        <S.LittleChartHolder>
+        {/* <S.LittleChartHolder>
           <ResponsiveContainer
             width="95%"
             height={200}
@@ -352,7 +376,7 @@ export const Crashes = () => {
               />
             </LineChart>
           </ResponsiveContainer>
-        </S.LittleChartHolder>
+        </S.LittleChartHolder> */}
       </S.Right>
     </S.Holder>
   );

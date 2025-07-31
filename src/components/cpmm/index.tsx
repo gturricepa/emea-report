@@ -31,7 +31,7 @@ export const CPMM = () => {
   const [loading, setLoading] = useState(true);
   const [selectedQuarters, setSelectedQuarters] = useState<
     ("Q1" | "Q2" | "Q3" | "Q4")[]
-  >(["Q1"]);
+  >(["Q1", "Q2"]);
 
   const selectedCountry = useSelector(
     (state: RootState) => state.country.selectedCountry
@@ -39,7 +39,7 @@ export const CPMM = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/assets/cpmm-prod.xlsx")
+    fetch("/assets/cpmm-prod 1.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
