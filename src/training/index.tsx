@@ -383,7 +383,7 @@ export const Trainings = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/assets/trainings Van 2.xlsx")
+    fetch("assets/prod-trainings Van 2.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
@@ -394,6 +394,7 @@ export const Trainings = () => {
         });
         if (jsonData.length > 0) {
           setData(jsonData);
+          console.log(jsonData);
         }
       })
       .catch((err) => console.error("Erro lendo Excel:", err))
