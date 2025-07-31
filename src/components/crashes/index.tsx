@@ -17,7 +17,9 @@ import {
   Line,
 } from "recharts";
 import { Card } from "../card";
-import { Select, DatePicker } from "antd";
+import { Select } from "antd";
+// import {  DatePicker } from "antd";
+
 import dayjs, { Dayjs } from "dayjs";
 import { AlertOutlined, ThunderboltOutlined } from "@ant-design/icons";
 
@@ -39,6 +41,7 @@ export const Crashes = () => {
   const [data, setData] = useState<CrasehsData[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEntities, setSelectedEntities] = useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [dateRange, setDateRange] = useState<
     [Dayjs | null, Dayjs | null] | null
   >(null);
@@ -228,12 +231,12 @@ export const Crashes = () => {
             ))}
           </Select>
 
-          <DatePicker.RangePicker
+          {/* <DatePicker.RangePicker
             onChange={setDateRange}
             format="DD-MM-YYYY"
             style={{ width: "20rem" }}
             allowClear
-          />
+          /> */}
 
           <span style={{ marginLeft: "1rem" }}>
             Total:{" "}
