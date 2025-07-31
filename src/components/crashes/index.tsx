@@ -4,6 +4,7 @@ import type { RootState } from "../../store";
 import { Spin } from "antd";
 import * as XLSX from "xlsx";
 import * as S from "./styles";
+
 import {
   BarChart,
   Bar,
@@ -49,7 +50,7 @@ export const Crashes = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/assets/prod-fast-crash.xlsx")
+    fetch("/assets/crashes-prod-4.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
@@ -197,7 +198,51 @@ export const Crashes = () => {
     .map(([date, count]) => ({ date, count }))
     .sort((a, b) => (a.date > b.date ? 1 : -1));
 
-  console.log(totalInjuries);
+  interface CustomTooltipProps {
+    active?: boolean;
+    label?: string;
+    payload?: {
+      name: string;
+      value: number | string;
+      color: string;
+    }[];
+  }
+
+  const CustomTooltip: React.FC<CustomTooltipProps> = ({
+    active,
+    payload,
+    label,
+  }) => {
+    if (active && payload && payload.length > 0) {
+      return (
+        <div
+          style={{ background: "#fff", padding: 10, border: "1px solid #ccc" }}
+        >
+          <p>
+            <strong>{label}</strong>
+          </p>
+          {payload.map((entry, index) => (
+            <div key={index} style={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{
+                  width: 10,
+                  height: 10,
+                  backgroundColor: entry.color,
+                  marginRight: 8,
+                  borderRadius: "50%",
+                }}
+              />
+              <span>
+                {entry.name}: {entry.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <S.Holder>
@@ -262,7 +307,7 @@ export const Crashes = () => {
         {/* Gráfico de Barras */}
         <ResponsiveContainer
           width={"95%"}
-          height={1000}
+          height={600}
           style={{
             backgroundColor: "white",
             borderRadius: "4px",
@@ -279,7 +324,7 @@ export const Crashes = () => {
               width={350}
               tick={{ fontSize: 12 }}
             />
-            <Tooltip />
+            <Tooltip content={<CustomTooltip />} />
             <Bar
               dataKey="y2024"
               fill="#397cda" // Azul
