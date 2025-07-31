@@ -125,12 +125,26 @@ export const CPMM = () => {
       dataIndex: "Vehicles Count",
       key: "vehicles",
       width: 150,
+      render: (value: number | string) => {
+        if (typeof value === "number") {
+          return new Intl.NumberFormat("pt-BR").format(value);
+        }
+        return value;
+      },
     },
     {
       title: "Miles",
       dataIndex: "Miles",
       key: "miles",
       width: 100,
+      render: (value: number | string) => {
+        if (typeof value === "number") {
+          return new Intl.NumberFormat("pt-BR", {
+            maximumFractionDigits: 0,
+          }).format(value);
+        }
+        return value;
+      },
     },
     {
       title: "Crashes Count",
@@ -246,16 +260,18 @@ export const CPMM = () => {
       {
         Period: "YTD Q2 2025",
         Country: selectedCountry === "all" ? "All Countries" : selectedCountry,
-        "Vehicles Count": (totalVehicles / 2).toFixed(0).toString(),
-        Miles: totalMiles.toFixed(0),
+        "Vehicles Count": new Intl.NumberFormat("pt-BR").format(
+          Math.round(totalVehicles / 2)
+        ),
+        Miles: new Intl.NumberFormat("pt-BR").format(Math.round(totalMiles)),
         "Accident Count": totalCrashes.toString(),
         "% Vehicles in Accidents":
           totalVehicles > 0
             ? ((totalCrashes / (totalVehicles / 2)) * (12 / 6) * 100).toFixed(2)
             : "0",
         "# Accidents with Injuries": totalInjuries.toString(),
-        APMM: accumulatedCPMM.toFixed(2), // Aqui está o cálculo correto do CPMM acumulado
-        IPMM: accumulatedIPMM.toFixed(2), // Aqui o cálculo correto do IPMM acumulado
+        APMM: accumulatedCPMM.toFixed(2),
+        IPMM: accumulatedIPMM.toFixed(2),
       },
     ];
   })();
@@ -321,7 +337,6 @@ export const CPMM = () => {
             columns={columns}
             showHeader={false}
             dataSource={accumulatedData.map((item, index) => ({
-              // Aqui fica a tericeira linha da tabela ----REMOVI ----
               ...item,
               key: `acc-${index}`,
             }))}

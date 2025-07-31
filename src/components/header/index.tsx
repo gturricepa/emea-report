@@ -26,7 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ selectedSession }) => {
         <h2>
           {selectedSession !== "trainings"
             ? selectedSession.toUpperCase()
-            : "INPACT TRAININGS CPMM"}
+            : "IMPACT TRAININGS CPMM"}
         </h2>
         <Select
           defaultValue="all"

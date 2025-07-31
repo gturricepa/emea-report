@@ -136,7 +136,6 @@ export const Crashes = () => {
     y2024: counts2024[classification] || 0,
     y2025: counts2025[classification] || 0,
   }));
-
   const getQuarter = (month: number): Quarter => {
     if (month < 3) return "Q1";
     if (month < 6) return "Q2";
@@ -307,7 +306,7 @@ export const Crashes = () => {
         {/* Gráfico de Barras */}
         <ResponsiveContainer
           width={"95%"}
-          height={600}
+          height={700}
           style={{
             backgroundColor: "white",
             borderRadius: "4px",
@@ -315,7 +314,7 @@ export const Crashes = () => {
             padding: ".5rem",
           }}
         >
-          <BarChart data={chartData} layout="vertical" barCategoryGap={10}>
+          <BarChart data={chartData} layout="vertical" barCategoryGap={15}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis type="number" />
             <YAxis
@@ -327,17 +326,15 @@ export const Crashes = () => {
             <Tooltip content={<CustomTooltip />} />
             <Bar
               dataKey="y2024"
-              fill="#397cda" // Azul
-              stackId="a"
+              fill="#397cda"
               radius={[0, 4, 4, 0]}
-              barSize={20}
+              barSize={15}
             />
             <Bar
               dataKey="y2025"
-              fill="#009688" // Verde
-              stackId="a"
+              fill="#009688"
               radius={[0, 4, 4, 0]}
-              barSize={20}
+              barSize={15}
             />
           </BarChart>
         </ResponsiveContainer>
