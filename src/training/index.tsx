@@ -383,7 +383,7 @@ export const Trainings = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("assets/trainings Van 3.xlsx")
+    fetch("assets/trainings Van 3 1.xlsx")
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
