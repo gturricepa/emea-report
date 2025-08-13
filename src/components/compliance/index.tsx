@@ -152,6 +152,7 @@ export const Compliance = () => {
       {!loading && (
         <div style={{ marginBottom: "1rem" }}>
           <Card
+            footer="Updated at 07-31-2025"
             title="% Total Complete"
             value={percetage !== "NaN" ? percetage : " - "}
           />

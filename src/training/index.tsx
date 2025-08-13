@@ -301,10 +301,14 @@ const FieldBarChart = ({
   data,
   field,
   label,
+  showCPMMLine = true,
+  cpmmAsBar = false,
 }: {
   data: TrainingData[];
   field: keyof TrainingData;
   label: string;
+  showCPMMLine?: boolean;
+  cpmmAsBar?: boolean;
 }) => {
   const quarters: Quarter[] = ["Q1", "Q2"];
   const years = [2024, 2025];
@@ -321,14 +325,12 @@ const FieldBarChart = ({
   return (
     <div
       style={{
-        flex: "1 1 48%",
-        minWidth: 450,
-        maxWidth: 600,
-        marginBottom: 40,
+        marginBottom: 20,
         backgroundColor: "white",
         borderRadius: 8,
         padding: "1rem",
         boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        position: "relative", // necessário para o posicionamento da legenda CPMM
       }}
     >
       <h3 style={{ textAlign: "center" }}>{label}</h3>
@@ -337,38 +339,80 @@ const FieldBarChart = ({
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="Quarter" />
           <YAxis allowDecimals={false} />
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            allowDecimals={false}
-            stroke="#ff7300"
-          />
+          {showCPMMLine && !cpmmAsBar && (
+            <YAxis
+              yAxisId="right"
+              orientation="right"
+              allowDecimals={false}
+              stroke="#ff7300"
+            />
+          )}
           <Tooltip />
           <Legend />
           <Bar dataKey={2024} fill="#8884d8" name="2024" />
           <Bar dataKey={2025} fill="#009688" name="2025" />
-          <Line
-            type="monotone"
-            dataKey="CPMM_2024"
-            stroke="#ff7300"
-            name="CPMM 2024"
-            strokeWidth={1}
-            dot={{ r: 4 }}
-            activeDot={{ r: 6 }}
-            yAxisId="right"
-          />
-          <Line
-            type="monotone"
-            dataKey="CPMM_2025"
-            stroke="#de119d"
-            name="CPMM 2025"
-            strokeWidth={1}
-            dot={{ r: 4 }}
-            activeDot={{ r: 6 }}
-            yAxisId="right"
-          />
+
+          {/* CPMM como linha (quando aplicável) */}
+          {showCPMMLine && !cpmmAsBar && (
+            <>
+              <Line
+                type="monotone"
+                dataKey="CPMM_2024"
+                stroke="#ff7300"
+                name="CPMM 2024"
+                strokeWidth={1}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+                yAxisId="right"
+              />
+              <Line
+                type="monotone"
+                dataKey="CPMM_2025"
+                stroke="#de119d"
+                name="CPMM 2025"
+                strokeWidth={1}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+                yAxisId="right"
+              />
+            </>
+          )}
         </BarChart>
       </ResponsiveContainer>
+
+      {/* Legenda CPMM sobreposta para BTW */}
+      {field === "BTW" && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 12,
+            // backgroundColor: "rgba(255, 0, 0, 0.8)",
+            color: "white",
+            borderRadius: 6,
+            padding: "8px 12px",
+            fontSize: 13,
+            zIndex: 10,
+            // boxShadow: "0 0 6px rgba(0,0,0,0.3)",
+            userSelect: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "1rem",
+          }}
+        >
+          <strong>CPMM Info</strong>
+          {quarters.map((q) => (
+            <div key={q} style={{ marginTop: 6 }}>
+              <strong>{q}</strong>
+              {years.map((y) => (
+                <div key={y}>
+                  {y}: {cpmms[`${q}_${y}`]}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -406,40 +450,60 @@ export const Trainings = () => {
       ? data.filter((item) => item.Country === "All Countries")
       : data.filter((item) => item.Country === selectedCountry);
 
-  console.log(filteredData);
   if (loading) return <p>Loading...</p>;
   if (filteredData.length === 0)
     return <p>No data found for selected country.</p>;
+
   return (
     <div
       style={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: 24,
         width: "100%",
-        justifyContent: "center",
-        padding: "1rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
+      {/* Gráfico BTW ocupa metade da largura */}
       <div
         style={{
-          // backgroundColor: "red",
-          display: "flex",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
+          width: "60%",
         }}
       >
-        <FieldBarChart data={filteredData} field="BTW" label="BTW" />
+        <FieldBarChart
+          data={filteredData}
+          field="BTW"
+          label="BTW"
+          showCPMMLine={false} // sem linha CPMM
+          cpmmAsBar={false}
+        />
       </div>
 
-      {/* <FieldBarChart data={filteredData} field="HRD" label="HRD" /> */}
-      <FieldBarChart data={filteredData} field="PIFS" label="PIFS" />
-      <FieldBarChart
-        data={filteredData}
-        field="Commentary Drive"
-        label="Commentary Drive"
-      />
+      {/* Gráficos PIFS e Commentary Drive lado a lado */}
+      <div
+        style={{
+          width: "80%",
+          display: "flex",
+          justifyContent: "space-evenly",
+          gap: "1rem",
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <FieldBarChart
+            data={filteredData}
+            field="PIFS"
+            label="PIFS"
+            showCPMMLine={false}
+          />
+        </div>
+        <div style={{ flex: 1 }}>
+          <FieldBarChart
+            data={filteredData}
+            field="Commentary Drive"
+            label="Commentary Drive"
+            showCPMMLine={false}
+          />
+        </div>
+      </div>
     </div>
   );
 };
